@@ -61,8 +61,8 @@ with head('Creating config dirs'):
 # Link config files
 LINKS = [
     ('vim/.vimrc', '~/.vimrc'),
-    ('nvim/init.vim', '~/.config/nvim/'),
-    ('nvim/coc-settings.json', '~/.config/nvim'),
+    ('nvim/init.vim', '~/.config/nvim/init.vim'),
+    ('nvim/coc-settings.json', '~/.config/nvim/coc-settings.json'),
     ('zsh/.zshrc', '~/.zshrc'),
     ('git/.gitconfig', '~/.gitconfig'),
     ('git/.gitignore_global', '~/.gitignore_global'),
