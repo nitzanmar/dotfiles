@@ -1,6 +1,6 @@
 from homely.files import mkdir, symlink
 from homely.install import installpkg
-from homely.ui import head, note
+from homely.ui import head
 
 
 # Install packages
@@ -43,7 +43,6 @@ PKGS = [
 
 with head('Installing packages'):
     for pkg in PKGS:
-        note('installing package: {}'.format(pkg))
         installpkg(pkg)
 
 
@@ -55,7 +54,6 @@ DIRS = [
 
 with head('Creating config dirs'):
     for _dir in DIRS:
-        note('creating config dir: {}'.format(_dir))
         mkdir(_dir)
 
 # Link config files
@@ -71,7 +69,6 @@ LINKS = [
 
 with head('Linking config files'):
     for target, link in LINKS:
-        note('creating link: {} -> {}'.format(target, link))
         symlink(target, link)
 
 # Installing oh-my-zsh
