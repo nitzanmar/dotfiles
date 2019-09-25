@@ -1,6 +1,6 @@
 from homely.files import mkdir, symlink
 from homely.install import installpkg
-from homely.ui import head, yesno
+from homely.ui import head
 
 
 # Install packages
@@ -41,10 +41,9 @@ PKGS = [
     'zstd',
 ]
 
-if yesno(name=None, prompt='Install packages?', default=False, recommended=True, noprompt=True):
-    with head('Installing packages'):
-        for pkg in PKGS:
-            installpkg(pkg)
+with head('Installing packages'):
+    for pkg in PKGS:
+        installpkg(pkg)
 
 
 # Create dirs
