@@ -1,6 +1,7 @@
 from homely.files import mkdir, symlink
 from homely.install import installpkg
 from homely.ui import head
+from homely.system import execute
 
 
 # Install packages
@@ -71,6 +72,10 @@ with head('Linking config files'):
     for target, link in LINKS:
         symlink(target, link)
 
-# Installing oh-my-zsh
-cmd = 'sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"'
+# Install nvim plugins
+cmd = ['nvim', '+PlugInstall', '+qa']
+execute(cmd)
+
+# Install oh-my-zsh
+# cmd = 'sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"'
 
