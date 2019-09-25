@@ -41,7 +41,7 @@ PKGS = [
     'zstd',
 ]
 
-if yesno(prompt='Install packages?', default=False, recommended=True, noprompt=True):
+if yesno(name=None, prompt='Install packages?', default=False, recommended=True, noprompt=True):
     with head('Installing packages'):
         for pkg in PKGS:
             installpkg(pkg)
