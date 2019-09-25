@@ -1,0 +1,8 @@
+dont-backup/
+*.swp
+*.idea
+*.vim
+.ccls-cache
+.python-version
+.vscode
+

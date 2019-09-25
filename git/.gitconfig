@@ -1,0 +1,43 @@
+[user]
+    name = Nitzan Margalit
+    email = nitzanmar@gmail.com
+[alias]
+    logshort = log --oneline --decorate
+    loggraph = log --graph --oneline --decorate
+    amend = commit -a --amend --no-edit -C HEAD
+    stashb = "!git stash save $(git rev-parse --abbrev-ref HEAD)"
+    save = !git push origin +HEAD:$USER/$(git-symbolic-ref HEAD | sed 's/^refs\\/heads\\///')
+    d = difftool
+    files = !git diff --name-only $(git merge-base HEAD \"$REVIEW_BASE\")
+    stat = !git diff --stat $(git merge-base HEAD \"$REVIEW_BASE\")
+[rerere]
+    enabled = true
+[help]
+    autocorrect = 1
+[branch]
+    autosetuprebase = always
+[push]
+    default = tracking
+[core]
+    editor = vim
+    pager = less -F 
+    excludesfile = "{HOME}/.gitignore_global"
+[color]
+    ui = true
+    diff = always
+    status = always
+[credential]
+    helper = osxkeychain
+[merge]
+    tool = fugitive
+    conflictstyle = diff3
+    prompt = false
+[mergetool "fugitive"]
+    cmd = vim -f -c "Gdiff" "$MERGED"
+[diff]
+    tool = vimdiff
+    trustExitCode = true
+    prompt = false
+[difftool "vimdiff"]
+    cmd = vim -d "$LOCAL" "$REMOTE"
+
