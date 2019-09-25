@@ -1,4 +1,4 @@
-from homely.files import mkdir
+from homely.files import mkdir, symlink
 from homely.install import installpkg
 from homely.ui import head, note
 
@@ -44,7 +44,7 @@ PKGS = [
 with head('Installing packages'):
     for pkg in PKGS:
         note('installing package: {}'.format(pkg))
-        installpackage(pkg)
+        installpkg(pkg)
 
 
 # Create dirs
