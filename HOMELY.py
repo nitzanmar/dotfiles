@@ -37,6 +37,8 @@ PKGS = [
     'vim',
     'wget',
     'yarn',
+    'zsh',
+    'zsh-completions',
     'zsh-autosuggestions',
     'zsh-syntax-highlighting',
     'zstd',
@@ -73,6 +75,7 @@ with head('Linking config files'):
 
 # Install oh-my-zsh
 # cmd = 'sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)" "" --unattended'
+# cmd = 'chsh -s /bin/zsh'
 
 # Install nvim plugins
 with head('Configuring neovim'):
