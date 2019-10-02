@@ -46,6 +46,9 @@ call plug#begin('~/.vim/plugged')
 " themes
 Plug 'morhetz/gruvbox'
 
+" fancy open screen
+Plug 'mhinz/vim-startify'
+
 " text objects
 Plug 'vim-scripts/argtextobj.vim'
 Plug 'michaeljsmith/vim-indent-object'
@@ -134,7 +137,11 @@ highlight LineNr ctermfg=grey
 " font
 set guifont=Menlo\ Regular:h13
 
+" colorscheme
 colorscheme gruvbox 
+
+" cmdline height
+set cmdheight=2
 
 "----------------------------------------------------------
 " General
@@ -203,10 +210,6 @@ set t_vb=
  
 " Enable use of the mouse for all modes
 set mouse=a
- 
-" Set the command window height to 2 lines, to avoid many cases of having to
-" "press <Enter> to continue"
-set cmdheight=2
  
 " Display line numbers on the left
 set number
@@ -383,12 +386,16 @@ nmap <silent> <F8> :TagbarToggle<CR>
 " lightline
 "----------------------------------------------------------
 let g:lightline = {
+    \ 'colorscheme': 'wombat',
     \ 'active': {
-    \   'left': [[ 'mode', 'paste' ], [ 'gitbranch', 'readonly', 'filename', 'modified' ]]
+    \   'left': [[ 'mode', 'paste' ], [ 'gitbranch', 'readonly', 'filename', 'modified' , 'tagbar' ]]
     \ },
     \ 'component_function': {
     \   'filename': 'LightlineFilename',
     \   'gitbranch': 'fugitive#head'
+    \ },
+    \ 'component': {
+    \   'tagbar': '%{tagbar#currenttag("[%s]", "", "f")}',
     \ }
     \ }
 
@@ -400,7 +407,6 @@ function! LightlineFilename()
   endif
   return expand('%')
 endfunction
-
 
 "----------------------------------------------------------
 " vim-coc

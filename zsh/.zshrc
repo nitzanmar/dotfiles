@@ -124,9 +124,9 @@ export GIT_EDITOR=nvim
 # fix vim colors in tmux
 alias tmux="TERM=screen-256color-bce tmux"
 
-if [ -f ~/.vim/plugged/gruvbox/gruvbox_256palette_osx.sh ]; then
-    source ~/.vim/plugged/gruvbox/gruvbox_256palette_osx.sh
-fi
+#if [ -f ~/.vim/plugged/gruvbox/gruvbox_256palette_osx.sh ]; then
+#    source ~/.vim/plugged/gruvbox/gruvbox_256palette_osx.sh
+#fi
 
 # use brew ruby
 export PATH="/usr/local/opt/ruby/bin:$PATH"
