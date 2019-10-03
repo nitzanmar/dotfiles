@@ -119,16 +119,17 @@ set splitright
 "----------------------------------------------------------
 " Looks
 "----------------------------------------------------------
-if (has("termguicolors"))
+if exists('+termguicolors')
+    let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+    let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+
     set termguicolors
 endif
 
-if !(has('nvim'))
+if !has('nvim')
     set background=dark
 endif
 
-let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 
 
 " highlisht current line
@@ -388,16 +389,20 @@ nmap <silent> <F8> :TagbarToggle<CR>
 let g:lightline = {
     \ 'colorscheme': 'wombat',
     \ 'active': {
-    \   'left': [[ 'mode', 'paste' ], [ 'gitbranch', 'readonly', 'filename', 'modified' , 'tagbar' ]]
+    \   'left': [[ 'mode', 'paste' ], [ 'gitbranch', 'readonly', 'filename', 'modified' , 'method' ]]
     \ },
     \ 'component_function': {
     \   'filename': 'LightlineFilename',
-    \   'gitbranch': 'fugitive#head'
+    \   'gitbranch': 'fugitive#head',
     \ },
     \ 'component': {
-    \   'tagbar': '%{tagbar#currenttag("[%s]", "", "f")}',
+    \   'method':'%{tagbar#currenttag("[%s]", "", "f")}',
+    \ },
     \ }
-    \ }
+
+function! NearestMethodOrFunction() abort
+  return tagbar#currenttag("[%s]", "", "f")
+endfunction
 
 function! LightlineFilename()
   let root = fnamemodify(get(b:, 'git_dir'), ':h')
