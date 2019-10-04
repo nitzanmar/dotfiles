@@ -1,7 +1,11 @@
 from homely.files import mkdir, symlink
 from homely.install import installpkg
 from homely.ui import head, note
-from homely.system import execute
+from homely.system import execute, haveexecutable
+
+
+# figure os
+# if os x -> install brew + cask
 
 
 # Install packages
@@ -46,6 +50,7 @@ PKGS = [
 
 with head('Installing packages'):
     for pkg in PKGS:
+        # add try-except if fails -> try upgrade instead of install
         installpkg(pkg)
 
 # Create dirs
@@ -77,6 +82,8 @@ with head('Linking config files'):
 # Install oh-my-zsh
 # cmd = 'sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)" "" --unattended'
 # cmd = 'chsh -s /bin/zsh'
+
+# installing kitty termianl emulator
 
 # Install nvim plugins
 with head('Configuring neovim'):
