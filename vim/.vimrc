@@ -400,10 +400,6 @@ let g:lightline = {
     \ },
     \ }
 
-function! NearestMethodOrFunction() abort
-  return tagbar#currenttag("[%s]", "", "f")
-endfunction
-
 function! LightlineFilename()
   let root = fnamemodify(get(b:, 'git_dir'), ':h')
   let path = expand('%:p')

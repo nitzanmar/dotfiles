@@ -6,7 +6,7 @@ from homely.system import execute
 
 # Install packages
 PKGS = [
-    #'awscli',
+    'awscli',
     'azure-cli',
     'ccls',
     'cmake',
@@ -90,4 +90,9 @@ with head('Configuring neovim'):
     note('Installing neovim plugins')
     cmd = ['nvim', '+PlugInstall', '+qa']
     execute(cmd)
+
+    # not working becasue PlugClean prompts for confirmation
+    #note('Cleaning removed neovim plugins')
+    #cmd = ['nvim', '+PlugClean', '+qa']
+    #execute(cmd)
 
