@@ -67,7 +67,7 @@ LINKS = [
     ('git/.gitconfig', '~/.gitconfig'),
     ('git/.gitignore_global', '~/.gitignore_global'),
     ('tmux/.tmux.conf', '~/.tmux.conf'),
-    ('kitty/kitty.conf', '~/.config/kitty.conf'),
+    ('kitty/kitty.conf', '~/.config/kitty/kitty.conf'),
 ]
 
 with head('Linking config files'):
