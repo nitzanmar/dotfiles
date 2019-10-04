@@ -6,7 +6,7 @@ from homely.system import execute
 
 # Install packages
 PKGS = [
-    'awscli',
+    #'awscli',
     'azure-cli',
     'ccls',
     'cmake',
