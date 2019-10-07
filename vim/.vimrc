@@ -224,6 +224,9 @@ set pastetoggle=<F11>
 " vim complete lookup order
 set complete=".,t,w,b,u,i"
 
+" highlight currentline
+set cursorline
+
 "----------------------------------------------------------
 " global indentation options
 "----------------------------------------------------------

@@ -152,3 +152,9 @@ export FZF_DEFAULT_OPTS="--layout=reverse --height 40%"
 
 source ~/.bash_profile
 
+# kitty configs
+autoload -Uz compinit
+compinit
+# Completion for kitty
+kitty + complete setup zsh | source /dev/stdin
+
