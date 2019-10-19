@@ -1,0 +1,7 @@
+local_home: "{{ lookup('env','HOME') }}"
+packages:
+  - tmux
+config_links:
+  - target: "{{ role_path }}/files/tmux.conf"
+    link: "{{ local_home }}/.tmux.conf"
+  

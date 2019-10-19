@@ -1,0 +1,10 @@
+local_home: "{{ lookup('env','HOME') }}"
+packages:
+  - zsh
+  - zsh-completions
+  - zsh-autosuggestions
+  - zsh-syntax-highlighting
+config_links:
+  - target: "{{ role_path }}/files/zshrc"
+    link: "{{ local_home }}/.zshrc"
+

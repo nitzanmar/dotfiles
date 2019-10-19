@@ -1,0 +1,7 @@
+local_home: "{{ lookup('env','HOME') }}"
+packages:
+  - vim
+config_links:
+  - target: "{{ role_path }}/files/vimrc"
+    link: "{{ local_home }}/.vimrc"
+

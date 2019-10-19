@@ -1,0 +1,12 @@
+# os x dev setup
+# requirements: git, brew, brew-cask
+---
+- hosts: local
+  roles:
+    - install_packages
+    - install_zsh
+    - install_git
+    - install_tmux
+    - install_vim
+    - install_neovim
+

@@ -1,0 +1,20 @@
+- import_tasks: darwin.yaml
+  when: ansible_facts['os_family']|lower == 'darwin'
+
+- name: Create config dir
+  file:
+    path: "{{ item }}"
+    state: directory
+  loop: "{{ config_dirs }}"
+
+- name: Link config files
+  file:
+    src: "{{ item.target }}"
+    path: "{{ item.link }}"
+    state: link
+  loop: "{{ config_links }}"
+
+- name: Install nvim plugins
+  command: 'nvim +PlugInstall +qa'
+  changed_when: False
+

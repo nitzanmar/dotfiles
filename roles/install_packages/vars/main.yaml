@@ -1,0 +1,30 @@
+packages:
+  - awscli
+  - azure-cli
+  - ccls
+  - cmake
+  - coreutils
+  - ctags
+  - fzf
+  - gettext
+  - ipmitool
+  - jq
+  - libevent
+  - libffi
+  - libyaml
+  - llvm
+  - ncurses
+  - nmap
+  - openssl
+  - pyenv
+  - pyenv-virtualenv
+  - readline
+  - reattach-to-user-namespace
+  - screenfetch
+  - shellcheck
+  - sshpass
+  - tree
+  - wget
+  - yarn
+  - zstd
+

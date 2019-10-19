@@ -1,0 +1,9 @@
+local_home: "{{ lookup('env','HOME') }}"
+packages:
+  - git 
+config_links:
+  - target: "{{ role_path }}/files/gitconfig"
+    link: "{{ local_home }}/.gitconfig"
+  - target: "{{ role_path }}/files/gitignore_global"
+    link: "{{ local_home }}/.gitignore_global"
+  

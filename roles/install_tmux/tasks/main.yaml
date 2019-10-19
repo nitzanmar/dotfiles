@@ -1,0 +1,10 @@
+- import_tasks: darwin.yaml
+  when: ansible_facts['os_family']|lower == 'darwin'
+
+- name: Link config files
+  file:
+    src: "{{ item.target }}"
+    path: "{{ item.link }}"
+    state: link
+  loop: "{{ config_links }}"
+
