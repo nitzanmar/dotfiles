@@ -45,6 +45,7 @@ call plug#begin('~/.vim/plugged')
 
 " themes
 Plug 'morhetz/gruvbox'
+Plug 'doums/darcula'
 
 " fancy open screen
 Plug 'mhinz/vim-startify'
@@ -256,7 +257,7 @@ map <F2> :mksession! ~/.vim_session <cr> " Quick write session with F2
 map <F3> :source ~/.vim_session <cr>     " And load session with F3
 
 " Toggle number line from off -> absolute -> hybrid relative num -> off
-nnoremap <F1> :call ToggleNumLine()<CR>
+nnoremap <F10> :call ToggleNumLine()<CR>
 
 function! ToggleNumLine()
   if !&l:number && !&l:relativenumber
@@ -457,4 +458,17 @@ inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 " Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
 " Coc only does snippet and additional edit on confirm.
 inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+
+"----------------------------------------------------------
+" Startify
+"----------------------------------------------------------
+let g:startify_custom_ascii = [
+    \'#     #                                 #     #                                            ',
+    \'##    # # ##### ######   ##   #    #    ##   ##   ##   #####   ####    ##   #      # ##### ',
+    \'# #   # #   #       #   #  #  ##   #    # # # #  #  #  #    # #    #  #  #  #      #   #   ',
+    \'#  #  # #   #      #   #    # # #  #    #  #  # #    # #    # #      #    # #      #   #   ',
+    \'#   # # #   #     #    ###### #  # #    #     # ###### #####  #  ### ###### #      #   #   ',
+    \'#    ## #   #    #     #    # #   ##    #     # #    # #   #  #    # #    # #      #   #   ',
+    \'#     # #   #   ###### #    # #    #    #     # #    # #    #  ####  #    # ###### #   #']
+let g:startify_custom_footer = g:startify_custom_ascii
 

@@ -1,0 +1,94 @@
+# os x dev setup
+# requirements: git, brew, brew-cask
+---
+- hosts: localhost
+  vars:
+    local_home: "{{ lookup('env','HOME') }}"
+    projects_dir: "{{ local_home }}/projects"
+    dotfiles_dir: "{{ projects_dir }}/dotfiles"
+    config_dirs:
+      - "{{ local_home }}/.config"
+      - "{{ local_home }}/.config/nvim"
+    dotfiles_links:
+      - target: "{{ dotfiles_dir }}/vim/.vimrc"
+        link: "{{ local_home }}/.vimrc"
+      - target: "{{ dotfiles_dir }}/nvim/init.vim"
+        link: "{{ local_home }}/.config/nvim/init.vim"
+      - target: "{{ dotfiles_dir }}/nvim/coc-settings.json"
+        link: "{{ local_home }}/.config/nvim/coc-settings.json"
+      - target: "{{ dotfiles_dir }}/zsh/.zshrc"
+        link: "{{ local_home }}/.zshrc"
+      - target: "{{ dotfiles_dir }}/git/.gitconfig"
+        link: "{{ local_home }}/.gitconfig"
+      - target: "{{ dotfiles_dir }}/git/.gitignore_global"
+        link: "{{ local_home }}/.gitignore_global"
+      - target: "{{ dotfiles_dir }}/tmux/.tmux.conf"
+        link: "{{ local_home }}/.tmux.conf"
+    brew_packages:
+      - awscli
+      - azure-cli
+      - ccls
+      - cmake
+      - coreutils
+      - ctags
+      - fzf
+      - gettext
+      - git
+      - ipmitool
+      - jq
+      - libevent
+      - libffi
+      - libyaml
+      - llvm
+      - ncurses
+      - neovim
+      - nmap
+      - openssl
+      - pyenv
+      - pyenv-virtualenv
+      - readline
+      - reattach-to-user-namespace
+      - screenfetch
+      - shellcheck
+      - sshpass
+      - tmux
+      - tree
+      - vim
+      - wget
+      - yarn
+      - zsh
+      - zsh-completions
+      - zsh-autosuggestions
+      - zsh-syntax-highlighting
+      - zstd
+  tasks:
+    - name: Create projects dir
+      file:
+        path: "{{ projects_dir }}"
+        state: directory
+    - name: Install brew packages
+      homebrew:
+        name: "{{ item }}"
+        state: present
+      loop: "{{ brew_packages }}"
+    - name: Create config dirs
+      file:
+        path: "{{ item }}"
+        state: directory
+      loop: "{{ config_dirs }}"
+    - name: Clone dotfiles repo
+      git:
+        repo: 'git@github.com:nitzanmar/dotfiles.git'
+        dest: "{{ dotfiles_dir }}"
+        clone: yes
+        force: no
+        update: no
+    - name: Link dotfiles
+      file:
+        src: "{{ item.target }}"
+        path: "{{ item.link }}"
+        state: link
+      loop: "{{ dotfiles_links }}"
+    - name: Install nvim plugins
+      command: 'nvim +PlugInstall +qa'
+
