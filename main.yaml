@@ -3,10 +3,23 @@
 ---
 - hosts: local
   roles:
-    - install_packages
-    - install_zsh
-    - install_git
-    - install_tmux
-    - install_vim
-    - install_neovim
+    - role: install_packages
+      tags:
+        - install_packages
+    - role: install_zsh
+      tags:
+        - install_zsh
+    - role: install_git
+      tags:
+        - install_git
+    - role: install_tmux
+      tags:
+        - install_tmux
+    - role: install_vim
+      tags:
+        - install_vim
+        - install_neovim
+    - role: install_neovim
+      tags:
+        - install_neovim
 
