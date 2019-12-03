@@ -8,8 +8,11 @@
     stashb = "!git stash save $(git rev-parse --abbrev-ref HEAD)"
     save = !git push origin +HEAD:$USER/$(git-symbolic-ref HEAD | sed 's/^refs\\/heads\\///')
     d = difftool
-    files = !git diff --name-only $(git merge-base HEAD \"$REVIEW_BASE\")
-    stat = !git diff --stat $(git merge-base HEAD \"$REVIEW_BASE\")
+    #files = !git diff --name-only $(git merge-base HEAD \"$REVIEW_BASE\")
+    #stat = !git diff --stat $(git merge-base HEAD \"$REVIEW_BASE\")
+    files = "!f() { DEFAULT=master; git diff --name-only $(git merge-base HEAD ${1-$DEFAULT}); }; f"
+    stats = "!f() { DEFAULT=master; git diff --stat $(git merge-base HEAD ${1-$DEFAULT}); }; f"
+
 [rerere]
     enabled = true
 [help]

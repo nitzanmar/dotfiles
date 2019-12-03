@@ -158,3 +158,13 @@ compinit
 # Completion for kitty
 kitty + complete setup zsh | source /dev/stdin
 
+# see: https://github.com/junegunn/fzf/wiki/examples#git
+# fbr - checkout git branch (including remote branches)
+fbr() {
+  local branches branch
+  branches=$(git branch --all | grep -v HEAD) &&
+  branch=$(echo "$branches" |
+           fzf-tmux -d $(( 2 + $(wc -l <<< "$branches") )) +m) &&
+  git checkout $(echo "$branch" | sed "s/.* //" | sed "s#remotes/[^/]*/##")
+}
+

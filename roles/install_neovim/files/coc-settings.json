@@ -5,8 +5,12 @@
   "python.linting.enabled": true,
   "python.linting.pylintEnabled": false,
   "python.linting.pep8Enabled": true,
-  "python.linting.pep8Args" : ["--ignore=E501"],
+  "python.linting.pep8Args" : ["--ignore=E501,E266"],
   "python.jediEnabled": false,
+  "python.autoComplete.extraPaths" : [
+      "/Users/nizanmargalit/projects/orion/pysrc/vapi", 
+      "/Users/nizanmargalit/projects/orion/pysrc/vastools"
+  ],
   "languageserver": {
     "ccls": {
       "command": "ccls",

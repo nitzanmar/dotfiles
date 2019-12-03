@@ -2,6 +2,13 @@
 # requirements: git, brew, brew-cask
 ---
 - hosts: local
+
+  pre_tasks:
+    - name: Update Homebrew
+      homebrew:
+        update_homebrew: yes
+      when: ansible_facts['os_family']|lower == 'darwin'
+
   roles:
     - role: install_packages
       tags:

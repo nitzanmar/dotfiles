@@ -6,4 +6,5 @@ dont-backup/
 .ccls-cache
 .python-version
 .vscode
+.workrc
 

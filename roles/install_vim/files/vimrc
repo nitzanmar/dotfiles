@@ -417,10 +417,16 @@ endfunction
 " vim-coc
 "----------------------------------------------------------
 " less annoying highlights
-hi default link CocErrorHighlight   Normal
-hi default link CocWarningHighlight Normal
-hi default link CocInfoHighlight    Noraml
-hi default link CocHintHighlight    Noraml
+"hi default link CocErrorHighlight   Normal
+"hi default link CocWarningHighlight Normal
+"hi default link CocInfoHighlight    Noraml
+"hi default link CocHintHighlight    Noraml
+
+highlight CocErrorHighlight     ctermfg=Red     guifg=#ff0000 cterm=underline gui=underline
+highlight CocWarningHighlight   ctermfg=Yellow  guifg=#ffff00 cterm=underline gui=underline
+highlight CocInfoHighlight      ctermfg=White   guifg=#ffffff cterm=underline gui=underline
+highlight CocHintHighlight      ctermfg=Blue    guifg=#15aabf cterm=underline gui=underline
+
 
 hi default CocErrorSign    ctermfg=Red      guifg=#ff0000
 hi default CocWarningSign  ctermfg=Yellow   guifg=#ffff00
