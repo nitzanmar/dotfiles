@@ -1,7 +1,6 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
-#export TERM="xterm-256color"
 
 # Path to your oh-my-zsh installation.
 export ZSH=/Users/nizanmargalit/.oh-my-zsh
@@ -122,7 +121,7 @@ export EDITOR="$VISUAL"
 export GIT_EDITOR=nvim
 
 # fix vim colors in tmux
-alias tmux="TERM=screen-256color-bce tmux"
+#alias tmux="TERM=screen-256color-bce tmux"
 
 #if [ -f ~/.vim/plugged/gruvbox/gruvbox_256palette_osx.sh ]; then
 #    source ~/.vim/plugged/gruvbox/gruvbox_256palette_osx.sh
@@ -162,9 +161,12 @@ kitty + complete setup zsh | source /dev/stdin
 # fbr - checkout git branch (including remote branches)
 fbr() {
   local branches branch
-  branches=$(git branch --all | grep -v HEAD) &&
+  #branches=$(git branch --all | grep -v HEAD) &&
+  branches=$(git branch | grep -v HEAD) &&
   branch=$(echo "$branches" |
            fzf-tmux -d $(( 2 + $(wc -l <<< "$branches") )) +m) &&
   git checkout $(echo "$branch" | sed "s/.* //" | sed "s#remotes/[^/]*/##")
 }
+
+export TERM="xterm-256color"
 

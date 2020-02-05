@@ -46,6 +46,7 @@ call plug#begin('~/.vim/plugged')
 " themes
 Plug 'morhetz/gruvbox'
 Plug 'doums/darcula'
+Plug 'mhartington/oceanic-next'
 
 " fancy open screen
 Plug 'mhinz/vim-startify'
@@ -89,6 +90,10 @@ Plug 'moby/moby' , {'rtp': '/contrib/syntax/vim/'}
 " tmux compatibility
 Plug 'tmux-plugins/vim-tmux-focus-events'
 
+" snippets
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
+
 " Initialize plugin system
 call plug#end()
 
@@ -120,6 +125,8 @@ set splitright
 "----------------------------------------------------------
 " Looks
 "----------------------------------------------------------
+"set t_Co=256
+
 if exists('+termguicolors')
     let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
     let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
@@ -131,9 +138,7 @@ if !has('nvim')
     set background=dark
 endif
 
-
-
-" highlisht current line
+" highlight current line
 highlight LineNr ctermfg=grey
 
 " font
@@ -216,6 +221,9 @@ set mouse=a
 " Display line numbers on the left
 set number
  
+" relative line numbers
+set relativenumber
+
 " Quickly time out on keycodes, but never time out on mappings
 set notimeout ttimeout ttimeoutlen=200
  
@@ -251,24 +259,6 @@ xnoremap <silent> p p:if v:register == '"'<Bar>let @@=@0<Bar>endif<cr>
 
 " copy current buffer path to clipboard
 nnoremap <leader>c :let @+ = expand("%:p")<cr>
-
-" save/load session
-map <F2> :mksession! ~/.vim_session <cr> " Quick write session with F2
-map <F3> :source ~/.vim_session <cr>     " And load session with F3
-
-" Toggle number line from off -> absolute -> hybrid relative num -> off
-nnoremap <F10> :call ToggleNumLine()<CR>
-
-function! ToggleNumLine()
-  if !&l:number && !&l:relativenumber
-    set number!
-  elseif &l:number && &l:relativenumber
-    set number!
-    set relativenumber!
-  elseif &l:number && !&l:relativenumber
-    set relativenumber!
-  endif
-endfunc
 
 " count match of last search
 map ,* *<C-O>:%s///gn<CR>
@@ -427,7 +417,6 @@ highlight CocWarningHighlight   ctermfg=Yellow  guifg=#ffff00 cterm=underline gu
 highlight CocInfoHighlight      ctermfg=White   guifg=#ffffff cterm=underline gui=underline
 highlight CocHintHighlight      ctermfg=Blue    guifg=#15aabf cterm=underline gui=underline
 
-
 hi default CocErrorSign    ctermfg=Red      guifg=#ff0000
 hi default CocWarningSign  ctermfg=Yellow   guifg=#ffff00
 hi default CocInfoSign     ctermfg=White    guifg=#ffffff
@@ -439,6 +428,10 @@ nmap <silent> <leader>lt <Plug>(coc-type-definition)
 nmap <silent> <leader>lc <Plug>(coc-declaration)
 nmap <silent> <leader>li <Plug>(coc-implementation)
 nmap <silent> <leader>lf <Plug>(coc-references)
+
+" Remaps for lists
+command! ListErrors CocList diagnostics
+nmap <silent> <leader>le :ListErrors<CR>
 
 " Remap for rename current word
 nmap <leader>lr <Plug>(coc-rename)
@@ -477,4 +470,9 @@ let g:startify_custom_ascii = [
     \'#    ## #   #    #     #    # #   ##    #     # #    # #   #  #    # #    # #      #   #   ',
     \'#     # #   #   ###### #    # #    #    #     # #    # #    #  ####  #    # ###### #   #']
 let g:startify_custom_footer = g:startify_custom_ascii
+
+"----------------------------------------------------------
+" Ultisnips
+"----------------------------------------------------------
+let g:UltiSnipsExpandTrigger = "<leader><tab>"
 

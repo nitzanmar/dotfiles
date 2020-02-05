@@ -12,7 +12,7 @@
     #stat = !git diff --stat $(git merge-base HEAD \"$REVIEW_BASE\")
     files = "!f() { DEFAULT=master; git diff --name-only $(git merge-base HEAD ${1-$DEFAULT}); }; f"
     stats = "!f() { DEFAULT=master; git diff --stat $(git merge-base HEAD ${1-$DEFAULT}); }; f"
-
+    follow = log -p --follow --
 [rerere]
     enabled = true
 [help]
