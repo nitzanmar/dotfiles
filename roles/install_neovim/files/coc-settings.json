@@ -15,10 +15,14 @@
     "ccls": {
       "command": "ccls",
       "filetypes": ["c", "cpp", "objc", "objcpp"],
-      "rootPatterns": [".ccls", "compile_commands.json", ".vim/", ".git/", ".hg/"],
+      "rootPatterns": [".ccls-root", ".ccls", "compile_commands.json", ".vim/", ".git/", ".hg/", "CMakeLists.txt"],
       "initializationOptions": {
+        "highlight": { "lsRanges" : true },
         "cache": {
           "directory": "/tmp/ccls"
+        },
+        "client": {
+          "snippetSupport": true
         },
         "clang": {
           "resourceDir": "/Library/Developer/CommandLineTools/usr/lib/clang/11.0.0",
@@ -34,7 +38,9 @@
             "-isystem",
             "/Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk/usr/include",
             "-isystem",
-            "/Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk/System/Library/Frameworks"
+            "/Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk/System/Library/Frameworks",
+            "-I",
+            "/Users/nizanmargalit/projects/orion/src"
           ]
         }
       }

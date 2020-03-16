@@ -47,6 +47,9 @@ call plug#begin('~/.vim/plugged')
 Plug 'morhetz/gruvbox'
 Plug 'doums/darcula'
 Plug 'mhartington/oceanic-next'
+Plug 'joshdick/onedark.vim'
+Plug 'tomasr/molokai'
+Plug 'arzg/vim-colors-xcode'
 
 " fancy open screen
 Plug 'mhinz/vim-startify'
@@ -94,6 +97,12 @@ Plug 'tmux-plugins/vim-tmux-focus-events'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 
+" editorconfig
+Plug 'editorconfig/editorconfig-vim'
+
+" cpp tools
+Plug 'jackguo380/vim-lsp-cxx-highlight'
+
 " Initialize plugin system
 call plug#end()
 
@@ -122,6 +131,9 @@ set nowrap
 set splitbelow
 set splitright
 
+" lines visible when scrolling
+set scrolloff=3
+
 "----------------------------------------------------------
 " Looks
 "----------------------------------------------------------
@@ -138,17 +150,11 @@ if !has('nvim')
     set background=dark
 endif
 
-" highlight current line
-highlight LineNr ctermfg=grey
-
 " font
 set guifont=Menlo\ Regular:h13
 
 " colorscheme
-colorscheme gruvbox 
-
-" cmdline height
-set cmdheight=2
+colorscheme onedark
 
 "----------------------------------------------------------
 " General
@@ -235,6 +241,22 @@ set complete=".,t,w,b,u,i"
 
 " highlight currentline
 set cursorline
+highlight CursorLine guibg=#32394e
+
+" highlight column 120
+set colorcolumn=120
+"highlight ColorColumn guibg=#4d1f00
+
+" cmdline height
+set cmdheight=2
+
+" consistent visual selection highlight
+highlight Visual term=reverse cterm=reverse
+
+" interactive substitute command
+if (has('nvim'))
+    set inccommand=nosplit
+endif
 
 "----------------------------------------------------------
 " global indentation options
@@ -269,7 +291,7 @@ map ,* *<C-O>:%s///gn<CR>
 " Tag current dir
 command! CTags !ctags -R
   \ --exclude='build*' --exclude='venv/**' --exclude='**/site-packages/**' 
-  \ --exclude='dist/**' --exclude='*.json' *
+  \ --exclude='dist/**' --exclude='*.json' --python-kinds=-i *
 
 " Hnadle trailing white spaces
 function! ShowSpaces(...)
@@ -299,11 +321,6 @@ if (g:env =~# 'DARWIN')
     set clipboard=unnamed
 endif
 
-"-----------------------------------------------------------
-" Ruler
-"-----------------------------------------------------------
-set colorcolumn=120
-highlight ColorColumn ctermbg=green
 
 "-----------------------------------------------------------
 " autoreload files
@@ -355,21 +372,30 @@ au! BufRead,BufNewFile *Dockerfile* setfiletype dockerfile
 augroup END
 
 "----------------------------------------------------------
+" SConstruct
+"----------------------------------------------------------
+augroup filetypedetect
+au! BufRead,BufNewFile *SConstruct* setfiletype python
+augroup END
+
+"----------------------------------------------------------
 " FZF
 "----------------------------------------------------------
-if executable('fzf') && PlugLoaded('fzf')
+if executable('fzf')
     command! -bang -nargs=* GGrep
       \ call fzf#vim#grep(
       \   'git grep --line-number '.shellescape(<q-args>), 0,
       \   { 'dir': systemlist('git rev-parse --show-toplevel')[0] }, <bang>0)
 
-    nmap <silent> <Leader>g :GGrep<CR>
-    nmap <silent> <Leader>F :GFiles<CR>
-    nmap <silent> <Leader>f :Files<CR>
-    nmap <silent> <Leader>t :Tags<CR>
-    nmap <silent> <Leader>b :Buffers<CR>
+    nmap <silent> <leader>g :GGrep<CR>
+    nmap <silent> <leader>F :GFiles<CR>
+    nmap <silent> <leader>f :Files<CR>
+    nmap <silent> <leader>t :Tags<CR>
+    nmap <silent> <leader>b :Buffers<CR>
     nmap <silent> <leader>/ :BLines<CR>
     nmap <silent> <leader>C :Commands<cr>
+    nmap <silent> <leader>H :History<cr>
+    nmap <silent> <leader>p :Commits<cr>
 endif
 
 "----------------------------------------------------------
@@ -381,7 +407,7 @@ nmap <silent> <F8> :TagbarToggle<CR>
 " lightline
 "----------------------------------------------------------
 let g:lightline = {
-    \ 'colorscheme': 'wombat',
+    \ 'colorscheme': 'nord',
     \ 'active': {
     \   'left': [[ 'mode', 'paste' ], [ 'gitbranch', 'readonly', 'filename', 'modified' , 'method' ]]
     \ },
@@ -459,20 +485,12 @@ inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 
 "----------------------------------------------------------
-" Startify
-"----------------------------------------------------------
-let g:startify_custom_ascii = [
-    \'#     #                                 #     #                                            ',
-    \'##    # # ##### ######   ##   #    #    ##   ##   ##   #####   ####    ##   #      # ##### ',
-    \'# #   # #   #       #   #  #  ##   #    # # # #  #  #  #    # #    #  #  #  #      #   #   ',
-    \'#  #  # #   #      #   #    # # #  #    #  #  # #    # #    # #      #    # #      #   #   ',
-    \'#   # # #   #     #    ###### #  # #    #     # ###### #####  #  ### ###### #      #   #   ',
-    \'#    ## #   #    #     #    # #   ##    #     # #    # #   #  #    # #    # #      #   #   ',
-    \'#     # #   #   ###### #    # #    #    #     # #    # #    #  ####  #    # ###### #   #']
-let g:startify_custom_footer = g:startify_custom_ascii
-
-"----------------------------------------------------------
 " Ultisnips
 "----------------------------------------------------------
 let g:UltiSnipsExpandTrigger = "<leader><tab>"
+
+"----------------------------------------------------------
+" EditorConfig
+"----------------------------------------------------------
+let g:EditorConfig_exclude_patterns = ['fugitive://.*', 'scp://.*']
 

@@ -4,7 +4,10 @@ dont-backup/
 *.idea
 *.vim
 .ccls-cache
+.ccls
 .python-version
 .vscode
 .workrc
+tags
+etags
 
