@@ -11,6 +11,8 @@
       "/Users/nizanmargalit/projects/orion/pysrc/vapi", 
       "/Users/nizanmargalit/projects/orion/pysrc/vastools"
   ],
+  "clangd.enabled": false,
+  "clangd.path": "/usr/local/opt/llvm/bin/clangd",
   "languageserver": {
     "ccls": {
       "command": "ccls",
