@@ -22,10 +22,10 @@
     - role: install_tmux
       tags:
         - install_tmux
-    - role: install_vim
-      tags:
-        - install_vim
-        - install_neovim
+    #- role: install_vim
+    #tags:
+      #- install_vim
+      #- install_neovim
     - role: install_neovim
       tags:
         - install_neovim
