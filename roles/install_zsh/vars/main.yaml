@@ -7,4 +7,6 @@ packages:
 config_links:
   - target: "{{ role_path }}/files/zshrc"
     link: "{{ local_home }}/.zshrc"
+  - target: "{{ role_path }}/files/p10k.zsh"
+    link: "{{ local_home }}/.p10k.zsh"
 
