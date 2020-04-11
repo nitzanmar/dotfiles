@@ -3,6 +3,7 @@ dont-backup/
 *.swp
 *.idea
 *.vim
+!init.vim
 .ccls-cache
 .ccls
 .python-version
