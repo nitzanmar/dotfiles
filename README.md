@@ -2,8 +2,15 @@
 My ansible playbook for install my dev env on mac os x. use at your own risk.
 
 ### TODO
+#### oh-my-zsh
+- oh-my-zsh installation [link](https://github.com/ohmyzsh/ohmyzsh)
+- powerlevel10k installation [link](https://github.com/romkatv/powerlevel10k)
+
+#### vim
+- depracate and remove
+
 #### neovim
-- share vimrc vim + nvim
+- separate init.vim form vimrc
 
 #### brew
 - brew installation [link](https://brew.sh)
