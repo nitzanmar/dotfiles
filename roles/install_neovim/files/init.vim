@@ -58,6 +58,7 @@ Plug 'mhartington/oceanic-next'
 Plug 'joshdick/onedark.vim'
 Plug 'tomasr/molokai'
 Plug 'arzg/vim-colors-xcode'
+Plug 'chuling/vim-equinusocio-material'
 
 " fancy open screen
 Plug 'mhinz/vim-startify'
@@ -110,6 +111,13 @@ Plug 'editorconfig/editorconfig-vim'
 
 " cpp tools
 Plug 'jackguo380/vim-lsp-cxx-highlight'
+Plug 'vim-scripts/a.vim'
+
+" comments
+Plug 'tpope/vim-commentary'
+
+" paired mappings
+Plug 'tpope/vim-unimpaired'
 
 " Initialize plugin system
 call plug#end()
@@ -133,6 +141,8 @@ endfunction
 "----------------------------------------------------------
 " Feels
 "----------------------------------------------------------
+" don't break long lines
+set formatoptions-=tc
 set nowrap
 
 " more natural splits
@@ -249,7 +259,7 @@ set complete=".,t,w,b,u,i"
 
 " highlight currentline
 set cursorline
-highlight CursorLine guibg=#32394e
+highlight CursorLine guibg=#323940
 
 " highlight column 120
 set colorcolumn=120
@@ -405,6 +415,9 @@ if executable('fzf')
     nmap <silent> <leader>H :History<cr>
     nmap <silent> <leader>p :Commits<cr>
 endif
+
+" preview window disabled
+let g:fzf_preview_window = ''
 
 "----------------------------------------------------------
 " Tagbar
