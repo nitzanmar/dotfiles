@@ -2,10 +2,6 @@
 My ansible playbook for install my dev env on mac os x. use at your own risk.
 
 ### TODO
-#### oh-my-zsh
-- oh-my-zsh installation [link](https://github.com/ohmyzsh/ohmyzsh)
-- powerlevel10k installation [link](https://github.com/romkatv/powerlevel10k)
-
 #### brew
 - brew installation [link](https://brew.sh)
 - brew cask installaion [link](https://sourabhbajaj.com/mac-setup/Homebrew/Cask.html)
