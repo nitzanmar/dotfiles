@@ -10,6 +10,15 @@
   shell: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
   when: not stat_oh_my_zsh_result.stat.exists
 
+- name: Check if we need to install powerlevel10k
+  stat:
+    path: ~/.oh-my-zsh/custom/themes/powerlevel10k
+  register: stat_powerlevel10k_result
+
+- name: Install powerlevel10k
+  shell: git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/.oh-my-zsh/custom/themes/powerlevel10k
+  when: not stat_powerlevel10k_result.stat.exists
+
 - name: Link config files
   file:
     src: "{{ item.target }}"
