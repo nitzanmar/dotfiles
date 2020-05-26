@@ -63,13 +63,12 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 plugins=(
   git
   osx
-  zsh-syntax-highlighting
-  zsh-autosuggestions
 )
 
 source $ZSH/oh-my-zsh.sh
 source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+DISABLE_UPDATE_PROMPT=true
 
 #ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#00e600"
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=yellow"

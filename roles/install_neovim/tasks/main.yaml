@@ -15,6 +15,6 @@
   loop: "{{ config_links }}"
 
 - name: Install nvim plugins
-  command: 'nvim +PlugInstall +qa'
+  shell: 'nvim +PlugInstall +qa'
   changed_when: False
 
