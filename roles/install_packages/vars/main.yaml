@@ -28,4 +28,5 @@ packages:
   - yarn
   - zstd
   - htop
+  - curl
 
