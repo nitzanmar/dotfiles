@@ -29,4 +29,6 @@ packages:
   - zstd
   - htop
   - curl
+  - sshfs
+  - rsync
 
