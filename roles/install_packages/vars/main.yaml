@@ -5,6 +5,7 @@ packages:
   - cmake
   - coreutils
   - ctags
+  - cscope
   - fzf
   - gettext
   - ipmitool
@@ -29,6 +30,5 @@ packages:
   - zstd
   - htop
   - curl
-  - sshfs
   - rsync
 
