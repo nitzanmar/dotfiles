@@ -12,7 +12,6 @@
       "/Users/nizanmargalit/projects/orion/pysrc/vastools"
   ],
   "clangd.enabled": false,
-  "clangd.path": "/usr/local/opt/llvm/bin/clangd",
   "languageserver": {
     "ccls": {
       "command": "ccls",
@@ -27,23 +26,7 @@
           "snippetSupport": true
         },
         "clang": {
-          "resourceDir": "/Library/Developer/CommandLineTools/usr/lib/clang/11.0.0",
-          "extraArgs": [
-            "-isystem",
-            "/usr/local/include",
-            "-isystem",
-            "/Library/Developer/CommandLineTools/usr/include/c++/v1",
-            "-isystem",
-            "/Library/Developer/CommandLineTools/usr/lib/clang/10.0.1/include",
-            "-isystem",
-            "/Library/Developer/CommandLineTools/usr/include",
-            "-isystem",
-            "/Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk/usr/include",
-            "-isystem",
-            "/Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk/System/Library/Frameworks",
-            "-I",
-            "/Users/nizanmargalit/projects/orion/src"
-          ]
+          "resourceDir": "/Library/Developer/CommandLineTools/usr/lib/clang/11.0.0"
         }
       }
     },
@@ -58,6 +41,7 @@
       "filetypes": ["dockerfile"],
       "args": ["--stdio"]
     }
-  }
+  },
+  "clangd.path": "/Users/nizanmargalit/.config/coc/extensions/coc-clangd-data/install/10.0.0/clangd_10.0.0/bin/clangd"
 }
 

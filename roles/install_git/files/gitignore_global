@@ -11,4 +11,7 @@ dont-backup/
 .workrc
 tags
 etags
+cscope.out
+compile_flags.txt
+__Scratch__
 

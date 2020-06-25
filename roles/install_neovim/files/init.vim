@@ -54,11 +54,10 @@ call plug#begin('~/.local/share/nvim/plugged')
 " themes
 Plug 'morhetz/gruvbox'
 Plug 'doums/darcula'
-Plug 'mhartington/oceanic-next'
 Plug 'joshdick/onedark.vim'
-Plug 'tomasr/molokai'
-Plug 'arzg/vim-colors-xcode'
-Plug 'chuling/vim-equinusocio-material'
+Plug 'KeitaNakamura/neodark.vim'
+Plug 'nanotech/jellybeans.vim'
+Plug 'w0ng/vim-hybrid'
 
 " fancy open screen
 Plug 'mhinz/vim-startify'
@@ -119,6 +118,9 @@ Plug 'tpope/vim-commentary'
 " paired mappings
 Plug 'tpope/vim-unimpaired'
 
+" scratch
+Plug 'mtth/scratch.vim'
+
 " Initialize plugin system
 call plug#end()
 
@@ -172,7 +174,8 @@ endif
 " set guifont=Menlo\ Regular:h13
 
 " colorscheme
-colorscheme onedark
+" colorscheme onedark
+colorscheme neodark
 
 "----------------------------------------------------------
 " General
@@ -267,6 +270,12 @@ set colorcolumn=120
 
 " cmdline height
 set cmdheight=2
+
+" tags files
+set tags=/tags,tags
+
+" don't use cscope in tags
+set nocscopetag
 
 " consistent visual selection highlight
 highlight Visual term=reverse cterm=reverse
