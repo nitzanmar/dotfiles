@@ -82,6 +82,7 @@ Plug 'junegunn/fzf.vim'
 
 " filetypes
 Plug 'sheerun/vim-polyglot'
+Plug 'Glench/Vim-Jinja2-Syntax'
 
 " LSP - coc
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
