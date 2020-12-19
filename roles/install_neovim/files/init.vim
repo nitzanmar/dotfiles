@@ -9,7 +9,7 @@
 "
 " The function needs to be near the top since it has to be known for later use
 " Sets only once the value of g:env to the running environment
-function! Config_setEnv() abort
+function! ConfigSetEnv() abort
     if exists('g:env')
         return
     endif
@@ -20,11 +20,16 @@ function! Config_setEnv() abort
     endif
 endfunction
 
-call Config_setEnv()
+call ConfigSetEnv()
 
 " neovim python paths
 let g:python_host_prog = $HOME . '/.pyenv/versions/neovim2/bin/python'
 let g:python3_host_prog = $HOME . '/.pyenv/versions/neovim3/bin/python'
+
+" neovim version related utils
+function! IsNvimTestVersion() abort
+    return has('nvim') && api_info().version.minor >= 5
+endfunction
 
 "----------------------------------------------------------
 " General {{{1
@@ -51,13 +56,11 @@ endif
 " - Make sure you use single quotes
 call plug#begin('~/.local/share/nvim/plugged')
 
-" themes
+" color schemes
 Plug 'morhetz/gruvbox'
 Plug 'doums/darcula'
 Plug 'joshdick/onedark.vim'
 Plug 'KeitaNakamura/neodark.vim'
-Plug 'nanotech/jellybeans.vim'
-Plug 'w0ng/vim-hybrid'
 
 " fancy open screen
 Plug 'mhinz/vim-startify'
@@ -80,15 +83,19 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
   " and you don't have to run the install script if you use fzf only in Vim.
 Plug 'junegunn/fzf.vim'
 
-" filetypes
+" filetypes related stuff
 Plug 'sheerun/vim-polyglot'
 Plug 'Glench/Vim-Jinja2-Syntax'
+Plug 'pedrohdz/vim-yaml-folds'
 
 " LSP - coc
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " tagbar
 Plug 'majutsushi/tagbar'
+
+" Vista
+Plug 'liuchengxu/vista.vim'
 
 " statusline plugins
 Plug 'itchyny/lightline.vim'
@@ -119,8 +126,10 @@ Plug 'tpope/vim-commentary'
 " paired mappings
 Plug 'tpope/vim-unimpaired'
 
-" scratch
-Plug 'mtth/scratch.vim'
+" neovim-0.5 nightly features
+if IsNvimTestVersion()
+    Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " update parsers on plugin update
+endif
 
 " Initialize plugin system
 call plug#end()
@@ -136,11 +145,8 @@ function! PlugLoaded(name)
 endfunction
 
 "----------------------------------------------------------
-"----------------------------------------------------------
 " Customizations {{{1
 "----------------------------------------------------------
-"----------------------------------------------------------
-
 "----------------------------------------------------------
 " Feels
 "----------------------------------------------------------
@@ -171,11 +177,7 @@ if !has('nvim')
     set background=dark
 endif
 
-" font
-" set guifont=Menlo\ Regular:h13
-
 " colorscheme
-" colorscheme onedark
 colorscheme neodark
 
 "----------------------------------------------------------
@@ -217,8 +219,8 @@ set diffopt+=hiddenoff
 set showcmd
 
 " Use case insensitive search, except when using capital letters
-set ignorecase
-set smartcase
+" set ignorecase
+" set smartcase
 
 " Allow backspacing over autoindent, line breaks and start of insert action
 set backspace=indent,eol,start
@@ -230,6 +232,9 @@ set nostartofline
  
 " Always display the status line, even if only one window is displayed
 set laststatus=2
+
+" Always disaply tabline
+" set showtabline=2
  
 " Instead of failing a command because of unsaved changes, instead raise a
 " dialogue asking if you wish to save changed files.
@@ -263,6 +268,7 @@ set complete=".,t,w,b,u,i"
 
 " highlight currentline
 set cursorline
+"highlight CursorLine guibg=#303840
 highlight CursorLine guibg=#323940
 
 " highlight column 120
@@ -280,6 +286,9 @@ set nocscopetag
 
 " consistent visual selection highlight
 highlight Visual term=reverse cterm=reverse
+
+" search highlight colors
+highlight Search guibg=peru guifg=wheat
 
 " interactive substitute command
 if (has('nvim'))
@@ -349,7 +358,6 @@ if (g:env =~# 'DARWIN')
     set clipboard=unnamed
 endif
 
-
 "-----------------------------------------------------------
 " autoreload files
 "-----------------------------------------------------------
@@ -393,20 +401,6 @@ endfunction
 nmap <silent> <F9> :call ToggleVExplorer()<CR>
 
 "----------------------------------------------------------
-" Dockerfile
-"----------------------------------------------------------
-augroup filetypedetect
-au! BufRead,BufNewFile *Dockerfile* setfiletype dockerfile
-augroup END
-
-"----------------------------------------------------------
-" SConstruct
-"----------------------------------------------------------
-augroup filetypedetect
-au! BufRead,BufNewFile *SConstruct* setfiletype python
-augroup END
-
-"----------------------------------------------------------
 " FZF
 "----------------------------------------------------------
 if executable('fzf')
@@ -432,7 +426,20 @@ let g:fzf_preview_window = ''
 "----------------------------------------------------------
 " Tagbar
 "----------------------------------------------------------
-nmap <silent> <F8> :TagbarToggle<CR>
+"nmap <silent> <F8> :TagbarToggle<CR>
+
+"----------------------------------------------------------
+" Vista
+"----------------------------------------------------------
+let g:vista_default_executive = 'coc'
+
+nmap <silent> <F8> :Vista!!<CR>
+
+function! NearestMethodOrFunction() abort
+  return get(b:, 'vista_nearest_method_or_function', '')
+endfunction
+
+autocmd VimEnter * call vista#RunForNearestMethodOrFunction()
 
 "----------------------------------------------------------
 " lightline
@@ -440,16 +447,28 @@ nmap <silent> <F8> :TagbarToggle<CR>
 let g:lightline = {
     \ 'colorscheme': 'nord',
     \ 'active': {
-    \   'left': [[ 'mode', 'paste' ], [ 'gitbranch', 'readonly', 'filename', 'modified' , 'method' ]]
+    \   'left': [[ 'mode', 'paste' ], [ 'gitbranch', 'readonly', 'modified' , 'filename', 'method' ]]
     \ },
     \ 'component_function': {
     \   'filename': 'LightlineFilename',
     \   'gitbranch': 'fugitive#head',
-    \ },
-    \ 'component': {
-    \   'method':'%{tagbar#currenttag("[%s]", "", "f")}',
+    \   'method':'NearestMethodOrFunction',
     \ },
     \ }
+
+" let g:lightline = {
+"     \ 'colorscheme': 'nord',
+"     \ 'active': {
+"     \   'left': [[ 'mode', 'paste' ], [ 'gitbranch', 'readonly', 'modified' , 'filename', 'method' ]]
+"     \ },
+"     \ 'component_function': {
+"     \   'filename': 'LightlineFilename',
+"     \   'gitbranch': 'fugitive#head',
+"     \ },
+"     \ 'component': {
+"     \   'method':'%{tagbar#currenttag("%s", "", "f")}',
+"     \ },
+"     \ }
 
 function! LightlineFilename()
   let root = fnamemodify(get(b:, 'git_dir'), ':h')
@@ -529,4 +548,45 @@ let g:EditorConfig_exclude_patterns = ['fugitive://.*', 'scp://.*']
 " a.vim
 "----------------------------------------------------------
 nmap <silent> <leader>a :A<cr>
+
+"----------------------------------------------------------
+" Filetype customizations {{{1
+"----------------------------------------------------------
+"----------------------------------------------------------
+" Dockerfile
+"----------------------------------------------------------
+augroup filetypedetect
+au! BufRead,BufNewFile *Dockerfile* setfiletype dockerfile
+augroup END
+
+"----------------------------------------------------------
+" SConstruct
+"----------------------------------------------------------
+augroup filetypedetect
+au! BufRead,BufNewFile *SConstruct* setfiletype python
+augroup END
+
+"----------------------------------------------------------
+" vproto
+"----------------------------------------------------------
+augroup filetypedetect
+au! BufRead,BufNewFile *vproto setfiletype c
+augroup END
+
+"----------------------------------------------------------
+" neovim-0.5 nightly related features {{{1
+"----------------------------------------------------------
+"----------------------------------------------------------
+" nvim-treesitter
+"----------------------------------------------------------
+if IsNvimTestVersion()
+lua <<EOF
+require'nvim-treesitter.configs'.setup {
+  ensure_installed = {"c", "cpp", "python", "lua", "bash", "json", "yaml"},
+  highlight = {
+    enable = true,
+  },
+}
+EOF
+endif
 

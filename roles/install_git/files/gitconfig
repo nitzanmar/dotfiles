@@ -1,18 +1,19 @@
 [user]
-    name = Nitzan Margalit
-    email = nitzanmar@gmail.com
+	name = Nitzan Margalit
+	email = nitzanmar@gmail.com
 [alias]
     logshort = log --oneline --decorate
     loggraph = log --graph --oneline --decorate
+    logclean = log --oneline --no-merges --pretty=format:"%h%x09%an%x09%ad%x09%s"
     amend = commit -a --amend --no-edit -C HEAD
     stashb = "!git stash save $(git rev-parse --abbrev-ref HEAD)"
     save = !git push origin +HEAD:$USER/$(git-symbolic-ref HEAD | sed 's/^refs\\/heads\\///')
-    d = difftool
-    #files = !git diff --name-only $(git merge-base HEAD \"$REVIEW_BASE\")
-    #stat = !git diff --stat $(git merge-base HEAD \"$REVIEW_BASE\")
     files = "!f() { DEFAULT=master; git diff --name-only $(git merge-base HEAD ${1-$DEFAULT}); }; f"
     stats = "!f() { DEFAULT=master; git diff --stat $(git merge-base HEAD ${1-$DEFAULT}); }; f"
     follow = log -p --follow --
+    d = difftool
+    g = grep -n
+    rld = reflog --date=iso
 [rerere]
     enabled = true
 [help]
@@ -23,8 +24,8 @@
     default = tracking
 [core]
     editor = vim
-    pager = less -F 
-    excludesfile = "~/.gitignore_global"
+    pager = less -F -R
+	excludesfile = /Users/nizanmargalit/.gitignore_global
 [color]
     ui = true
     diff = always
@@ -44,3 +45,11 @@
 [difftool "vimdiff"]
     cmd = vim -d "$LOCAL" "$REMOTE"
 
+[difftool "sourcetree"]
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path = 
+[mergetool "sourcetree"]
+	cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	trustExitCode = true
+[commit]
+	template = /Users/nizanmargalit/.stCommitMsg

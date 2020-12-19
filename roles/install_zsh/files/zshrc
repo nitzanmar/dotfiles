@@ -116,6 +116,8 @@ ZSH_THEME_GIT_PROMPT_PREFIX="%{$fg_bold[blue]%}(%{$fg[red]%}"
 export VISUAL=nvim
 export EDITOR="$VISUAL"
 export GIT_EDITOR=nvim
+# use nvim as man pager
+export MANPAGER='nvim +Man!' 
 
 # fix vim colors in tmux
 #alias tmux="TERM=screen-256color-bce tmux"
@@ -139,6 +141,8 @@ fi
 if [[ -n $VIRTUAL_ENV && -e "${VIRTUAL_ENV}/bin/activate" ]]; then
   source "${VIRTUAL_ENV}/bin/activate"
 fi
+
+export PYENV_VIRTUALENV_DISABLE_PROMPT=1
 
 # fzf
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
@@ -173,4 +177,24 @@ export CPPFLAGS="-I/usr/local/opt/llvm/include"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# novim 0.5 -nightly experiments
+update_nvim_nightly() {
+    nvim_test_dir='/Users/nizanmargalit/nvim-0.5-test'
+    curr_dir="$PWD"
+    mkdir -p $nvim_test_dir
+    pushd $nvim_test_dir
+    curl -LO https://github.com/neovim/neovim/releases/download/nightly/nvim-macos.tar.gz && tar xvzf nvim-macos.tar.gz
+
+    if ! [[ "$nvim_test_dir" -ef "$curr_dir" ]]; then 
+        popd
+    fi
+}
+
+alias nvim5='~/nvim-0.5-test/nvim-osx64/bin/nvim'
+alias nvg='nvim5 $(git ls-files | fzf)'
+
+# cheat use fzf
+#export CHEAT_USE_FZF=true
+
 

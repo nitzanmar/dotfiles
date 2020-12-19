@@ -13,6 +13,7 @@
       "/Users/nizanmargalit/projects/orion/pysrc/vastools"
   ],
   "clangd.enabled": false,
+  "diagnostic-languageserver.enable": false,
   "languageserver": {
     "ccls": {
       "command": "ccls",
@@ -42,7 +43,10 @@
             "-isystem",
             "/Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk/System/Library/Frameworks",
             "-I",
-            "/Users/nizanmargalit/projects/orion/src"
+            "/Users/nizanmargalit/projects/orion/src",
+            "-I",
+            "/Users/nizanmargalit/projects/linux_inc",
+            "-pthread"
           ]
         }
       }
