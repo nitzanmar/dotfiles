@@ -17,10 +17,12 @@
   "languageserver": {
     "ccls": {
       "command": "ccls",
-      "filetypes": ["c", "cpp", "objc", "objcpp"],
-      "rootPatterns": [".ccls-root", ".ccls", "compile_commands.json", ".vim/", ".git/", ".hg/", "CMakeLists.txt"],
+      "filetypes": [ "c", "cpp", "objc", "objcpp" ],
+      "rootPatterns": [ ".ccls-root", ".ccls", "compile_commands.json", ".vim/", ".git/", ".hg/", "CMakeLists.txt" ],
       "initializationOptions": {
-        "highlight": { "lsRanges" : true },
+        "highlight": {
+          "lsRanges": true
+        },
         "cache": {
           "directory": "/tmp/ccls"
         },
@@ -42,8 +44,18 @@
             "/Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk/usr/include",
             "-isystem",
             "/Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk/System/Library/Frameworks",
+            "-isystem",
+            "/Users/nizanmargalit/.conan/data/boost/1.74.0/_/_/package/834f6567751ade3c4b47dd3f707cc979a7e049b4/include",
+            "-isystem",
+            "/Users/nizanmargalit/.conan/data/bzip2/1.0.8/_/_/package/25d69afe851bfb8cb5aedd20123fa41e061f316e/include",
+            "-isystem",
+            "/Users/nizanmargalit/.conan/data/zlib/1.2.11/_/_/package/534dcc368c999e07e81f146b3466b8f656ef1f55/include",
+            "-isystem",
+            "/Users/nizanmargalit/.conan/data/libiconv/1.16/_/_/package/534dcc368c999e07e81f146b3466b8f656ef1f55/include",
             "-I",
             "/Users/nizanmargalit/projects/orion/src",
+            "-I",
+            "/Users/nizanmargalit/.conan/data",
             "-I",
             "/Users/nizanmargalit/projects/linux_inc",
             "-pthread"
@@ -65,4 +77,3 @@
   },
   "clangd.path": "/Users/nizanmargalit/.config/coc/extensions/coc-clangd-data/install/10.0.0/clangd_10.0.0/bin/clangd"
 }
-

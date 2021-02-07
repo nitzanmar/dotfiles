@@ -126,6 +126,9 @@ Plug 'tpope/vim-commentary'
 " paired mappings
 Plug 'tpope/vim-unimpaired'
 
+" vertical align
+Plug 'godlygeek/tabular'
+
 " neovim-0.5 nightly features
 if IsNvimTestVersion()
     Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " update parsers on plugin update
