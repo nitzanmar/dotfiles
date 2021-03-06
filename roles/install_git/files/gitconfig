@@ -1,6 +1,6 @@
 [user]
-	name = Nitzan Margalit
-	email = nitzanmar@gmail.com
+    name = Nitzan Margalit
+    email = nitzanmar@gmail.com
 [alias]
     logshort = log --oneline --decorate
     loggraph = log --graph --oneline --decorate
@@ -26,30 +26,28 @@
 [core]
     editor = vim
     pager = less -F -R
-	  excludesfile = /Users/nizanmargalit/.gitignore_global
+    excludesfile = /Users/nizanmargalit/.gitignore_global
 [color]
     ui = true
     diff = always
     status = always
 [credential]
     helper = osxkeychain
-[merge]
-	  tool = fugitive
-    conflictstyle = diff3
-    prompt = false
-[mergetool "fugitive"]
-	cmd = nvim -f -c \"Gvdiffsplit!\" \"$MERGED\"
-[diff]
-    tool = vimdiff
-    trustExitCode = true
-    prompt = false
-[difftool "vimdiff"]
-    cmd = vim -d "$LOCAL" "$REMOTE"
-[difftool "sourcetree"]
-	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
-	path = 
-[mergetool "sourcetree"]
-	cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
-	trustExitCode = true
 [commit]
-	template = /Users/nizanmargalit/.stCommitMsg
+    template = /Users/nizanmargalit/.stCommitMsg
+[diff]
+    tool = kdiff3
+[difftool "kdiff3"]
+    path = /usr/local/bin/kdiff3
+[difftool]
+    prompt = false
+    keepBackup = false
+    trustExitCode = false
+[merge]
+    tool = kdiff3
+[mergetool]
+    prompt = false
+    keepBackup = false
+    keepTemporaries = false
+[mergetool "kdiff3"]
+    path = /usr/local/bin/kdiff3

@@ -31,4 +31,5 @@ packages:
   - htop
   - curl
   - rsync
+  - kdiff3
 

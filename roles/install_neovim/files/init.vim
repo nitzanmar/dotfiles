@@ -325,6 +325,9 @@ nnoremap <leader>c :let @+ = expand("%:p")<cr>
 " count match of last search
 map ,* *<C-O>:%s///gn<CR>
 
+" yank file contents to system clipboard
+nnoremap <leader>Y :%y+<CR>
+
 "----------------------------------------------------------
 " General custom commands
 "----------------------------------------------------------
