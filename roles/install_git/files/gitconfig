@@ -16,7 +16,7 @@
     rld = reflog --date=iso
     bname = rev-parse --abbrev-ref HEAD
 [rerere]
-    enabled = true
+	enabled = false
 [help]
     autocorrect = 1
 [branch]
@@ -47,7 +47,7 @@
     tool = kdiff3
 [mergetool]
     prompt = false
-    keepBackup = false
+	keepBackup = false
     keepTemporaries = false
 [mergetool "kdiff3"]
     path = /usr/local/bin/kdiff3

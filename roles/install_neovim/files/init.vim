@@ -90,6 +90,8 @@ Plug 'pedrohdz/vim-yaml-folds'
 
 " LSP - coc
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" Plug 'neovim/nvim-lspconfig'
+" Plug 'nvim-lua/completion-nvim'
 
 " tagbar
 Plug 'majutsushi/tagbar'
@@ -328,6 +330,9 @@ map ,* *<C-O>:%s///gn<CR>
 " yank file contents to system clipboard
 nnoremap <leader>Y :%y+<CR>
 
+" open tag under cursor in vertical split
+nnoremap <silent> <c-w>] :vert winc ]<cr>
+
 "----------------------------------------------------------
 " General custom commands
 "----------------------------------------------------------
@@ -451,9 +456,9 @@ autocmd VimEnter * call vista#RunForNearestMethodOrFunction()
 " lightline
 "----------------------------------------------------------
 let g:lightline = {
-    \ 'colorscheme': 'nord',
     \ 'active': {
-    \   'left': [[ 'mode', 'paste' ], [ 'gitbranch', 'readonly', 'modified' , 'filename', 'method' ]]
+    \   'left': [ [ 'mode', 'paste' ],
+    \             [ 'readonly', 'filename', 'modified', 'method' ] ]
     \ },
     \ 'component_function': {
     \   'filename': 'LightlineFilename',
@@ -461,6 +466,26 @@ let g:lightline = {
     \   'method':'NearestMethodOrFunction',
     \ },
     \ }
+
+" let s:nord0 = ["#2E3440", "NONE"]
+" let s:nord1 = ["#3B4252", 0]
+" let s:nord2 = ["#434C5E", "NONE"]
+" let s:nord3 = ["#4C566A", 8]
+" let s:nord4 = ["#D8DEE9", "NONE"]
+" let s:nord5 = ["#E5E9F0", 7]
+" let s:nord6 = ["#ECEFF4", 15]
+" let s:nord7 = ["#8FBCBB", 14]
+" let s:nord8 = ["#88C0D0", 6]
+" let s:nord9 = ["#81A1C1", 4]
+" let s:nord10 = ["#5E81AC", 12]
+" let s:nord11 = ["#BF616A", 1]
+" let s:nord12 = ["#D08770", 11]
+" let s:nord13 = ["#EBCB8B", 3]
+" let s:nord14 = ["#A3BE8C", 2]
+" let s:nord15 = ["#B48EAD", 5]
+" let s:nordleft = [ [ s:nord1, s:nord8 ], [ s:nord5, s:nord1 ] ]
+" let s:palette = g:lightline#colorscheme#{g:lightline.colorscheme}#palette
+" let s:palette.left = s:nordleft
 
 " let g:lightline = {
 "     \ 'colorscheme': 'nord',
@@ -470,9 +495,7 @@ let g:lightline = {
 "     \ 'component_function': {
 "     \   'filename': 'LightlineFilename',
 "     \   'gitbranch': 'fugitive#head',
-"     \ },
-"     \ 'component': {
-"     \   'method':'%{tagbar#currenttag("%s", "", "f")}',
+"     \   'method':'NearestMethodOrFunction',
 "     \ },
 "     \ }
 
@@ -554,6 +577,7 @@ let g:EditorConfig_exclude_patterns = ['fugitive://.*', 'scp://.*']
 " a.vim
 "----------------------------------------------------------
 nmap <silent> <leader>a :A<cr>
+nmap <silent> <leader>A :AV<cr>
 
 "----------------------------------------------------------
 " Filetype customizations {{{1
