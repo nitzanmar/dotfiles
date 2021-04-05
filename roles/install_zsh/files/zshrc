@@ -193,7 +193,7 @@ update_nvim_nightly() {
 }
 
 alias nvim5='~/nvim-0.5-test/nvim-osx64/bin/nvim'
-alias nvg='nvim5 $(git ls-files | fzf)'
+alias nvg='nvim $(git ls-files | fzf)'
 
 # cheat use fzf
 #export CHEAT_USE_FZF=true

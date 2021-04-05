@@ -90,8 +90,10 @@ Plug 'pedrohdz/vim-yaml-folds'
 
 " LSP - coc
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-" Plug 'neovim/nvim-lspconfig'
-" Plug 'nvim-lua/completion-nvim'
+
+" builtin lsp
+Plug 'neovim/nvim-lspconfig'
+Plug 'nvim-lua/completion-nvim'
 
 " tagbar
 Plug 'majutsushi/tagbar'
@@ -224,8 +226,8 @@ set diffopt+=hiddenoff
 set showcmd
 
 " Use case insensitive search, except when using capital letters
-" set ignorecase
-" set smartcase
+set ignorecase
+set smartcase
 
 " Allow backspacing over autoindent, line breaks and start of insert action
 set backspace=indent,eol,start
@@ -442,7 +444,7 @@ let g:fzf_preview_window = ''
 "----------------------------------------------------------
 " Vista
 "----------------------------------------------------------
-let g:vista_default_executive = 'coc'
+" let g:vista_default_executive = 'coc'
 
 nmap <silent> <F8> :Vista!!<CR>
 
@@ -466,38 +468,6 @@ let g:lightline = {
     \   'method':'NearestMethodOrFunction',
     \ },
     \ }
-
-" let s:nord0 = ["#2E3440", "NONE"]
-" let s:nord1 = ["#3B4252", 0]
-" let s:nord2 = ["#434C5E", "NONE"]
-" let s:nord3 = ["#4C566A", 8]
-" let s:nord4 = ["#D8DEE9", "NONE"]
-" let s:nord5 = ["#E5E9F0", 7]
-" let s:nord6 = ["#ECEFF4", 15]
-" let s:nord7 = ["#8FBCBB", 14]
-" let s:nord8 = ["#88C0D0", 6]
-" let s:nord9 = ["#81A1C1", 4]
-" let s:nord10 = ["#5E81AC", 12]
-" let s:nord11 = ["#BF616A", 1]
-" let s:nord12 = ["#D08770", 11]
-" let s:nord13 = ["#EBCB8B", 3]
-" let s:nord14 = ["#A3BE8C", 2]
-" let s:nord15 = ["#B48EAD", 5]
-" let s:nordleft = [ [ s:nord1, s:nord8 ], [ s:nord5, s:nord1 ] ]
-" let s:palette = g:lightline#colorscheme#{g:lightline.colorscheme}#palette
-" let s:palette.left = s:nordleft
-
-" let g:lightline = {
-"     \ 'colorscheme': 'nord',
-"     \ 'active': {
-"     \   'left': [[ 'mode', 'paste' ], [ 'gitbranch', 'readonly', 'modified' , 'filename', 'method' ]]
-"     \ },
-"     \ 'component_function': {
-"     \   'filename': 'LightlineFilename',
-"     \   'gitbranch': 'fugitive#head',
-"     \   'method':'NearestMethodOrFunction',
-"     \ },
-"     \ }
 
 function! LightlineFilename()
   let root = fnamemodify(get(b:, 'git_dir'), ':h')
@@ -606,10 +576,10 @@ augroup END
 "----------------------------------------------------------
 " neovim-0.5 nightly related features {{{1
 "----------------------------------------------------------
+if IsNvimTestVersion()
 "----------------------------------------------------------
 " nvim-treesitter
 "----------------------------------------------------------
-if IsNvimTestVersion()
 lua <<EOF
 require'nvim-treesitter.configs'.setup {
   ensure_installed = {"c", "cpp", "python", "lua", "bash", "json", "yaml"},
@@ -618,5 +588,132 @@ require'nvim-treesitter.configs'.setup {
   },
 }
 EOF
+
+""----------------------------------------------------------
+"" lsp
+""----------------------------------------------------------
+"lua <<EOF
+"local lspconfig = require 'lspconfig'
+"local util = require 'lspconfig/util'
+"local completion = require 'completion'
+
+"local mapper = function(mode, key, result)
+"  vim.api.nvim_buf_set_keymap(0, mode, key, "<cmd>lua "..result.."<cr>", {noremap = true, silent = true})
+"end
+
+"-- mapper('n', '<leader>l', 'vim.lsp.buf.document_symbol()')
+"mapper('n', '<leader>ld', 'vim.lsp.buf.definition()')
+"mapper('n', '<leader>dn', 'vim.lsp.diagnostic.goto_next()')
+"mapper('n', '<leader>dp', 'vim.lsp.diagnostic.goto_prev()')
+
+"lspconfig.bashls.setup {
+"    on_attach = completion.on_attach,
+"    capabilities = {
+"        textDocument = {
+"            completion = {
+"                completionItem = {
+"                    snippetSupport = true
+"                }
+"            }
+"        }
+"    }
+"}
+
+"lspconfig.pyls.setup {
+"    on_attach = completion.on_attach,
+"    capabilities = {
+"        textDocument = {
+"            completion = {
+"                completionItem = {
+"                    snippetSupport = true
+"                }
+"            }
+"        }
+"    },
+"    plugins = {
+"        jedi = {
+"            extra_paths = {
+"                "/Users/nizanmargalit/projects/orion/pysrc/vapi", 
+"                "/Users/nizanmargalit/projects/orion/pysrc/vastools"
+"            }
+"        }
+"    }
+"}
+
+"lspconfig.ccls.setup {
+"    on_attach = completion.on_attach,
+"    capabilities = {
+"        textDocument = {
+"            completion = {
+"                completionItem = {
+"                    snippetSupport = true
+"                }
+"            }
+"        }
+"    },
+"    filetypes = {"c", "cpp", "objc", "objcpp"},
+"    root_dir = util.root_pattern(".ccls-root", ".ccls", "compile_commands.json", ".vim", ".git", ".hg", "CMakeLists.txt", "compile_flags.txt"),
+"    init_options = {
+"        highlight = {
+"            lsRanges = true
+"        },
+"        cache = {
+"            directory = "/tmp/ccls"
+"        },
+"        client = {
+"            snippetSupport = true
+"        },
+"        clang = {
+"            resourceDir =  "/Library/Developer/CommandLineTools/usr/lib/clang/11.0.0",
+"            extraArgs = {
+"                "-isystem",
+"                "/usr/local/include",
+"                "-isystem",
+"                "/Library/Developer/CommandLineTools/usr/include/c++/v1",
+"                "-isystem",
+"                "/Library/Developer/CommandLineTools/usr/lib/clang/10.0.1/include",
+"                "-isystem",
+"                "/Library/Developer/CommandLineTools/usr/include",
+"                "-isystem",
+"                "/Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk/usr/include",
+"                "-isystem",
+"                "/Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk/System/Library/Frameworks",
+"                "-isystem",
+"                "/Users/nizanmargalit/.conan/data/boost/1.74.0/_/_/package/834f6567751ade3c4b47dd3f707cc979a7e049b4/include",
+"                "-isystem",
+"                "/Users/nizanmargalit/.conan/data/bzip2/1.0.8/_/_/package/25d69afe851bfb8cb5aedd20123fa41e061f316e/include",
+"                "-isystem",
+"                "/Users/nizanmargalit/.conan/data/zlib/1.2.11/_/_/package/534dcc368c999e07e81f146b3466b8f656ef1f55/include",
+"                "-isystem",
+"                "/Users/nizanmargalit/.conan/data/libiconv/1.16/_/_/package/534dcc368c999e07e81f146b3466b8f656ef1f55/include",
+"                "-I",
+"                "/Users/nizanmargalit/projects/orion/src",
+"                "-I",
+"                "/Users/nizanmargalit/.conan/data",
+"                "-I",
+"                "/Users/nizanmargalit/projects/linux_inc",
+"                "-pthread"
+"            }
+"        }
+"    }
+"}
+"EOF
+
+""----------------------------------------------------------
+"" completion-nvim
+""----------------------------------------------------------
+"" Use <Tab> and <S-Tab> to navigate through popup menu
+"inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+"inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+
+"" Set completeopt to have a better completion experience
+"set completeopt=menuone,noinsert,noselect
+
+"" Avoid showing message extra message when using completion
+"set shortmess+=c
+
+"" Set snippets supprt
+"let g:completion_enable_snippet = 'UltiSnips'
+
 endif
 
