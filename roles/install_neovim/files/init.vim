@@ -1,8 +1,5 @@
 " vim: set foldmethod=marker:
 
-"set runtimepath^=~/.vim runtimepath+=~/.vim/after
-"let &packpath = &runtimepath
-
 "----------------------------------------------------------
 " ENV setttings {{{1
 "----------------------------------------------------------
@@ -61,20 +58,11 @@ Plug 'morhetz/gruvbox'
 Plug 'doums/darcula'
 Plug 'joshdick/onedark.vim'
 Plug 'KeitaNakamura/neodark.vim'
-
-" fancy open screen
-Plug 'mhinz/vim-startify'
-
-" text objects
-Plug 'vim-scripts/argtextobj.vim'
-Plug 'michaeljsmith/vim-indent-object'
+Plug 'altercation/vim-colors-solarized'
 
 " git plugins
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
-
-" vim-vinegar
-Plug 'tpope/vim-vinegar'
 
 " fzf
 " PlugInstall and PlugUpdate will clone fzf in ~/.fzf and run the install script
@@ -85,24 +73,6 @@ Plug 'junegunn/fzf.vim'
 
 " filetypes related stuff
 Plug 'sheerun/vim-polyglot'
-Plug 'Glench/Vim-Jinja2-Syntax'
-" Plug 'pedrohdz/vim-yaml-folds'
-
-" LSP - coc
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-
-" builtin lsp
-Plug 'neovim/nvim-lspconfig'
-Plug 'nvim-lua/completion-nvim'
-
-" tagbar
-Plug 'majutsushi/tagbar'
-
-" Vista
-Plug 'liuchengxu/vista.vim'
-
-" statusline plugins
-Plug 'itchyny/lightline.vim'
 
 " python plugins
 Plug 'Vimjas/vim-python-pep8-indent'
@@ -111,7 +81,7 @@ Plug 'Vimjas/vim-python-pep8-indent'
 Plug 'moby/moby' , {'rtp': '/contrib/syntax/vim/'}
 
 " tmux compatibility
-Plug 'tmux-plugins/vim-tmux-focus-events'
+" Plug 'tmux-plugins/vim-tmux-focus-events'
 
 " snippets
 Plug 'SirVer/ultisnips'
@@ -121,7 +91,7 @@ Plug 'honza/vim-snippets'
 Plug 'editorconfig/editorconfig-vim'
 
 " cpp tools
-Plug 'jackguo380/vim-lsp-cxx-highlight'
+" Plug 'jackguo380/vim-lsp-cxx-highlight'
 Plug 'vim-scripts/a.vim'
 
 " comments
@@ -130,8 +100,9 @@ Plug 'tpope/vim-commentary'
 " paired mappings
 Plug 'tpope/vim-unimpaired'
 
-" vertical align
-Plug 'godlygeek/tabular'
+" native LSP
+Plug 'neovim/nvim-lspconfig'
+Plug 'nvim-lua/completion-nvim'
 
 " neovim-0.5 nightly features
 if IsNvimTestVersion()
@@ -270,20 +241,13 @@ set notimeout ttimeout ttimeoutlen=200
 " Use <F11> to toggle between 'paste' and 'nopaste'
 set pastetoggle=<F11>
 
-" vim complete lookup order
-set complete=".,t,w,b,u,i"
-
 " highlight currentline
 set cursorline
-"highlight CursorLine guibg=#303840
 highlight CursorLine guibg=#323940
-
-" highlight column 120
 set colorcolumn=120
-"highlight ColorColumn guibg=#4d1f00
 
 " cmdline height
-set cmdheight=2
+" set cmdheight=2
 
 " tags files
 set tags=/tags,tags
@@ -324,7 +288,7 @@ nnoremap <C-L> :nohl<CR><C-L>
 xnoremap <silent> p p:if v:register == '"'<Bar>let @@=@0<Bar>endif<cr>
 
 " copy current buffer path to clipboard
-nnoremap <leader>c :let @+ = expand("%:p")<cr>
+nnoremap <leader>c :let @+ = expand("%")<cr>
 
 " count match of last search
 map ,* *<C-O>:%s///gn<CR>
@@ -374,13 +338,13 @@ endif
 "-----------------------------------------------------------
 " autoreload files
 "-----------------------------------------------------------
-set autoread
-" Triger `autoread` when files changes on disk
-autocmd FileChangedShell,FocusGained,BufEnter,CursorHold,CursorHoldI *
-  \ if mode() != 'c' | checktime | endif
-" Notification after file change
-autocmd FileChangedShellPost *
-  \ echohl WarningMsg | echo "File changed on disk. Buffer reloaded." | echohl None
+" set autoread
+" " Triger `autoread` when files changes on disk
+" autocmd FileChangedShell,FocusGained,BufEnter,CursorHold,CursorHoldI *
+"   \ if mode() != 'c' | checktime | endif
+" " Notification after file change
+" autocmd FileChangedShellPost *
+"   \ echohl WarningMsg | echo "File changed on disk. Buffer reloaded." | echohl None
 
 "----------------------------------------------------------
 " netrw
@@ -437,103 +401,6 @@ endif
 let g:fzf_preview_window = ''
 
 "----------------------------------------------------------
-" Tagbar
-"----------------------------------------------------------
-"nmap <silent> <F8> :TagbarToggle<CR>
-
-"----------------------------------------------------------
-" Vista
-"----------------------------------------------------------
-" let g:vista_default_executive = 'coc'
-
-nmap <silent> <F8> :Vista!!<CR>
-
-function! NearestMethodOrFunction() abort
-  return get(b:, 'vista_nearest_method_or_function', '')
-endfunction
-
-autocmd VimEnter * call vista#RunForNearestMethodOrFunction()
-
-"----------------------------------------------------------
-" lightline
-"----------------------------------------------------------
-let g:lightline = {
-    \ 'active': {
-    \   'left': [ [ 'mode', 'paste' ],
-    \             [ 'readonly', 'filename', 'modified', 'method' ] ]
-    \ },
-    \ 'component_function': {
-    \   'filename': 'LightlineFilename',
-    \   'gitbranch': 'fugitive#head',
-    \   'method':'NearestMethodOrFunction',
-    \ },
-    \ }
-
-function! LightlineFilename()
-  let root = fnamemodify(get(b:, 'git_dir'), ':h')
-  let path = expand('%:p')
-  if path[:len(root)-1] ==# root
-    return path[len(root)+1:]
-  endif
-  return expand('%')
-endfunction
-
-"----------------------------------------------------------
-" vim-coc
-"----------------------------------------------------------
-" less annoying highlights
-"hi default link CocErrorHighlight   Normal
-"hi default link CocWarningHighlight Normal
-"hi default link CocInfoHighlight    Noraml
-"hi default link CocHintHighlight    Noraml
-
-highlight CocErrorHighlight     ctermfg=Red     guifg=#ff0000 cterm=underline gui=underline
-highlight CocWarningHighlight   ctermfg=Yellow  guifg=#ffff00 cterm=underline gui=underline
-highlight CocInfoHighlight      ctermfg=White   guifg=#ffffff cterm=underline gui=underline
-highlight CocHintHighlight      ctermfg=Blue    guifg=#15aabf cterm=underline gui=underline
-
-hi default CocErrorSign    ctermfg=Red      guifg=#ff0000
-hi default CocWarningSign  ctermfg=Yellow   guifg=#ffff00
-hi default CocInfoSign     ctermfg=White    guifg=#ffffff
-hi default CocHintSign     ctermfg=Blue     guifg=#15aabf
-
-" Remap keys for gotos
-nmap <silent> <leader>ld <Plug>(coc-definition)
-nmap <silent> <leader>lt <Plug>(coc-type-definition)
-nmap <silent> <leader>lc <Plug>(coc-declaration)
-nmap <silent> <leader>li <Plug>(coc-implementation)
-nmap <silent> <leader>lf <Plug>(coc-references)
-
-" Remaps for lists
-command! ListErrors CocList diagnostics
-nmap <silent> <leader>le :ListErrors<CR>
-
-" Remap for rename current word
-nmap <leader>lr <Plug>(coc-rename)
-
-" Use K for show documentation in preview window
-nnoremap <silent> K :call <SID>show_documentation()<CR>
-
-function! s:show_documentation()
-  if &filetype == 'vim'
-    execute 'h '.expand('<cword>')
-  else
-    call CocAction('doHover')
-  endif
-endfunction
-
-" Highlight symbol under cursor on CursorHold
-autocmd CursorHold * silent call CocActionAsync('highlight')
-
-" Use <Tab> and <S-Tab> to navigate the completion list
-inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-
-" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
-" Coc only does snippet and additional edit on confirm.
-inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-
-"----------------------------------------------------------
 " Ultisnips
 "----------------------------------------------------------
 let g:UltiSnipsExpandTrigger = "<leader><tab>"
@@ -548,6 +415,21 @@ let g:EditorConfig_exclude_patterns = ['fugitive://.*', 'scp://.*']
 "----------------------------------------------------------
 nmap <silent> <leader>a :A<cr>
 nmap <silent> <leader>A :AV<cr>
+
+"----------------------------------------------------------
+" completion-nvim
+"----------------------------------------------------------
+" Use <Tab> and <S-Tab> to navigate through popup menu
+inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+
+" Set completeopt to have a better completion experience
+set completeopt=menuone,noinsert,noselect
+
+" Avoid showing message extra message when using completion
+set shortmess+=c
+
+let g:completion_enable_snippet = 'UltiSnips'
 
 "----------------------------------------------------------
 " Filetype customizations {{{1
@@ -573,9 +455,9 @@ augroup filetypedetect
 au! BufRead,BufNewFile *vproto setfiletype c
 augroup END
 
-"----------------------------------------------------------
-" neovim-0.5 nightly related features {{{1
-"----------------------------------------------------------
+""----------------------------------------------------------
+"" neovim-0.5 nightly related features {{{1
+""----------------------------------------------------------
 if IsNvimTestVersion()
 "----------------------------------------------------------
 " nvim-treesitter
@@ -589,131 +471,77 @@ require'nvim-treesitter.configs'.setup {
 }
 EOF
 
-""----------------------------------------------------------
-"" lsp
-""----------------------------------------------------------
-"lua <<EOF
-"local lspconfig = require 'lspconfig'
-"local util = require 'lspconfig/util'
-"local completion = require 'completion'
+"----------------------------------------------------------
+" native LSP
+"----------------------------------------------------------
+lua << EOF
+vim.lsp.set_log_level('debug')
 
-"local mapper = function(mode, key, result)
-"  vim.api.nvim_buf_set_keymap(0, mode, key, "<cmd>lua "..result.."<cr>", {noremap = true, silent = true})
-"end
+local nvim_lsp = require('lspconfig')
+local nvim_comp = require('completion')
 
-"-- mapper('n', '<leader>l', 'vim.lsp.buf.document_symbol()')
-"mapper('n', '<leader>ld', 'vim.lsp.buf.definition()')
-"mapper('n', '<leader>dn', 'vim.lsp.diagnostic.goto_next()')
-"mapper('n', '<leader>dp', 'vim.lsp.diagnostic.goto_prev()')
+-- Use an on_attach function to only map the following keys
+-- after the language server attaches to the current buffer
+local on_attach = function(client, bufnr)
+  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
+  local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
 
-"lspconfig.bashls.setup {
-"    on_attach = completion.on_attach,
-"    capabilities = {
-"        textDocument = {
-"            completion = {
-"                completionItem = {
-"                    snippetSupport = true
-"                }
-"            }
-"        }
-"    }
-"}
+  --Enable completion triggered by <c-x><c-o>
+  buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
 
-"lspconfig.pyls.setup {
-"    on_attach = completion.on_attach,
-"    capabilities = {
-"        textDocument = {
-"            completion = {
-"                completionItem = {
-"                    snippetSupport = true
-"                }
-"            }
-"        }
-"    },
-"    plugins = {
-"        jedi = {
-"            extra_paths = {
-"                "/Users/nizanmargalit/projects/orion/pysrc/vapi", 
-"                "/Users/nizanmargalit/projects/orion/pysrc/vastools"
-"            }
-"        }
-"    }
-"}
+  -- Mappings.
+  local opts = { noremap=true, silent=true }
 
-"lspconfig.ccls.setup {
-"    on_attach = completion.on_attach,
-"    capabilities = {
-"        textDocument = {
-"            completion = {
-"                completionItem = {
-"                    snippetSupport = true
-"                }
-"            }
-"        }
-"    },
-"    filetypes = {"c", "cpp", "objc", "objcpp"},
-"    root_dir = util.root_pattern(".ccls-root", ".ccls", "compile_commands.json", ".vim", ".git", ".hg", "CMakeLists.txt", "compile_flags.txt"),
-"    init_options = {
-"        highlight = {
-"            lsRanges = true
-"        },
-"        cache = {
-"            directory = "/tmp/ccls"
-"        },
-"        client = {
-"            snippetSupport = true
-"        },
-"        clang = {
-"            resourceDir =  "/Library/Developer/CommandLineTools/usr/lib/clang/11.0.0",
-"            extraArgs = {
-"                "-isystem",
-"                "/usr/local/include",
-"                "-isystem",
-"                "/Library/Developer/CommandLineTools/usr/include/c++/v1",
-"                "-isystem",
-"                "/Library/Developer/CommandLineTools/usr/lib/clang/10.0.1/include",
-"                "-isystem",
-"                "/Library/Developer/CommandLineTools/usr/include",
-"                "-isystem",
-"                "/Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk/usr/include",
-"                "-isystem",
-"                "/Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk/System/Library/Frameworks",
-"                "-isystem",
-"                "/Users/nizanmargalit/.conan/data/boost/1.74.0/_/_/package/834f6567751ade3c4b47dd3f707cc979a7e049b4/include",
-"                "-isystem",
-"                "/Users/nizanmargalit/.conan/data/bzip2/1.0.8/_/_/package/25d69afe851bfb8cb5aedd20123fa41e061f316e/include",
-"                "-isystem",
-"                "/Users/nizanmargalit/.conan/data/zlib/1.2.11/_/_/package/534dcc368c999e07e81f146b3466b8f656ef1f55/include",
-"                "-isystem",
-"                "/Users/nizanmargalit/.conan/data/libiconv/1.16/_/_/package/534dcc368c999e07e81f146b3466b8f656ef1f55/include",
-"                "-I",
-"                "/Users/nizanmargalit/projects/orion/src",
-"                "-I",
-"                "/Users/nizanmargalit/.conan/data",
-"                "-I",
-"                "/Users/nizanmargalit/projects/linux_inc",
-"                "-pthread"
-"            }
-"        }
-"    }
-"}
-"EOF
+  -- See `:help vim.lsp.*` for documentation on any of the below functions
+  buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+  buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
+  buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
+  buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+  buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+  buf_set_keymap('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
+  buf_set_keymap('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
+  buf_set_keymap('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
+  buf_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+  buf_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+  buf_set_keymap('n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+  buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+  buf_set_keymap('n', '<space>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
+  buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
+  buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
+  buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
+  buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
 
-""----------------------------------------------------------
-"" completion-nvim
-""----------------------------------------------------------
-"" Use <Tab> and <S-Tab> to navigate through popup menu
-"inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
-"inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+  nvim_comp.on_attach()
 
-"" Set completeopt to have a better completion experience
-"set completeopt=menuone,noinsert,noselect
+end
 
-"" Avoid showing message extra message when using completion
-"set shortmess+=c
+--nvim_lsp.pyright.setup{on_attach=nvim_comp.on_attach}
+nvim_lsp.pyright.setup{
+    on_attach=on_attach
+}
 
-"" Set snippets supprt
-"let g:completion_enable_snippet = 'UltiSnips'
+nvim_lsp.yamlls.setup{
+    on_attach=on_attach,
+    settings = {
+        python = {
+            analysis = {
+                extraPaths = {
+                    "/Users/nizanmargalit/projects/orion/pysrc/vapi/vapi", 
+                    "/Users/nizanmargalit/projects/orion/pysrc/vastools/vastools"
+                }
+            }
+        }
+    }
+}
 
+nvim_lsp.bashls.setup{
+    on_attach=on_attach
+}
+
+--nvim_lsp.clangd.setup{
+--    on_attach=on_attach,
+--    cmd = { "/usr/local/opt/llvm/bin/clangd", "--background-index" }
+--}
+EOF
 endif
 
