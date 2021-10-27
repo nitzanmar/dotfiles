@@ -273,6 +273,9 @@ set shiftwidth=4
 set softtabstop=4
 set expandtab
 
+" c/cpp long arg indentation
+set cino=(0<Enter>
+
 "----------------------------------------------------------
 " General custom mappings
 "----------------------------------------------------------
