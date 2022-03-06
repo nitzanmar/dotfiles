@@ -32,4 +32,5 @@ packages:
   - curl
   - rsync
   - kdiff3
+  - the_silver_searcher
 
