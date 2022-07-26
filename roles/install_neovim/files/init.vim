@@ -23,11 +23,6 @@ call ConfigSetEnv()
 let g:python_host_prog = $HOME . '/.pyenv/versions/neovim2/bin/python'
 let g:python3_host_prog = $HOME . '/.pyenv/versions/neovim3/bin/python'
 
-" neovim version related utils
-function! IsNvimTestVersion() abort
-    return has('nvim') && api_info().version.minor >= 5
-endfunction
-
 "----------------------------------------------------------
 " General {{{1
 "----------------------------------------------------------
@@ -54,11 +49,7 @@ endif
 call plug#begin('~/.local/share/nvim/plugged')
 
 " color schemes
-Plug 'morhetz/gruvbox'
-Plug 'doums/darcula'
-Plug 'joshdick/onedark.vim'
 Plug 'KeitaNakamura/neodark.vim'
-Plug 'altercation/vim-colors-solarized'
 
 " git plugins
 Plug 'tpope/vim-fugitive'
@@ -71,46 +62,20 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
   " and you don't have to run the install script if you use fzf only in Vim.
 Plug 'junegunn/fzf.vim'
 
-" filetypes related stuff
-Plug 'sheerun/vim-polyglot'
+" editorconfig
+Plug 'editorconfig/editorconfig-vim'
+
+" cpp plugins
+Plug 'vim-scripts/a.vim'
 
 " python plugins
 Plug 'Vimjas/vim-python-pep8-indent'
 
-" Dockerfile syntax
-Plug 'moby/moby' , {'rtp': '/contrib/syntax/vim/'}
-
-" tmux compatibility
-" Plug 'tmux-plugins/vim-tmux-focus-events'
-
-" snippets
-Plug 'SirVer/ultisnips'
-Plug 'honza/vim-snippets'
-
-" editorconfig
-Plug 'editorconfig/editorconfig-vim'
-
-" cpp tools
-" Plug 'jackguo380/vim-lsp-cxx-highlight'
-Plug 'vim-scripts/a.vim'
-
 " comments
 Plug 'tpope/vim-commentary'
 
-" paired mappings
-Plug 'tpope/vim-unimpaired'
-
-" file outline
-Plug 'liuchengxu/vista.vim'
-
-" native LSP
-" Plug 'neovim/nvim-lspconfig'
-" Plug 'nvim-lua/completion-nvim'
-
-" neovim-0.5 nightly features
-if IsNvimTestVersion()
-    Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " update parsers on plugin update
-endif
+" tree-sitter
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " update parsers on plugin update
 
 " Initialize plugin system
 call plug#end()
@@ -145,7 +110,6 @@ set scrolloff=3
 "----------------------------------------------------------
 " Looks
 "----------------------------------------------------------
-"set t_Co=256
 
 if exists('+termguicolors')
     let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
@@ -253,10 +217,10 @@ set colorcolumn=120
 " set cmdheight=2
 
 " tags files
-set tags=/tags,tags
+set tags=./tags;,tags;
 
 " don't use cscope in tags
-set nocscopetag
+" set nocscopetag
 
 " consistent visual selection highlight
 highlight Visual term=reverse cterm=reverse
@@ -272,12 +236,12 @@ endif
 "----------------------------------------------------------
 " global indentation options
 "----------------------------------------------------------
-" set shiftwidth=4
-" set softtabstop=4
+set shiftwidth=4
+set softtabstop=4
 set expandtab
 
 " c/cpp long arg indentation
-"set cino=(0
+set cino=(0
 
 "----------------------------------------------------------
 " General custom mappings
@@ -341,17 +305,6 @@ if (g:env =~# 'DARWIN')
     set clipboard=unnamed
 endif
 
-"-----------------------------------------------------------
-" autoreload files
-"-----------------------------------------------------------
-" set autoread
-" " Triger `autoread` when files changes on disk
-" autocmd FileChangedShell,FocusGained,BufEnter,CursorHold,CursorHoldI *
-"   \ if mode() != 'c' | checktime | endif
-" " Notification after file change
-" autocmd FileChangedShellPost *
-"   \ echohl WarningMsg | echo "File changed on disk. Buffer reloaded." | echohl None
-
 "----------------------------------------------------------
 " netrw
 "----------------------------------------------------------
@@ -407,11 +360,6 @@ endif
 let g:fzf_preview_window = ''
 
 "----------------------------------------------------------
-" Ultisnips
-"----------------------------------------------------------
-let g:UltiSnipsExpandTrigger = "<leader><tab>"
-
-"----------------------------------------------------------
 " EditorConfig
 "----------------------------------------------------------
 let g:EditorConfig_exclude_patterns = ['fugitive://.*', 'scp://.*']
@@ -423,19 +371,228 @@ nmap <silent> <leader>a :A<cr>
 nmap <silent> <leader>A :AV<cr>
 
 "----------------------------------------------------------
-" completion-nvim
+" nvim-treesitter
 "----------------------------------------------------------
-" Use <Tab> and <S-Tab> to navigate through popup menu
-inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+lua <<EOF
+require'nvim-treesitter.configs'.setup {
+  ensure_installed = {"c", "cpp", "python", "lua", "bash", "json", "yaml"},
+  highlight = {
+    enable = true,
+  },
+}
+EOF
 
-" Set completeopt to have a better completion experience
-set completeopt=menuone,noinsert,noselect
+"----------------------------------------------------------
+" cscope
+"----------------------------------------------------------
+" taken from http://cscope.sourceforge.net/cscope_maps.vim
+" This tests to see if vim was configured with the '--enable-cscope' option
+" when it was compiled.  If it wasn't, time to recompile vim... 
+if has("cscope")
 
-" Avoid showing message extra message when using completion
-set shortmess+=c
+    """"""""""""" Standard cscope/vim boilerplate
 
-let g:completion_enable_snippet = 'UltiSnips'
+    " use both cscope and ctag for 'ctrl-]', ':ta', and 'vim -t'
+    " set cscopetag
+    set nocscopetag
+
+    " check cscope for definition of a symbol before checking ctags: set to 1
+    " if you want the reverse search order.
+    set csto=1
+
+    " add any cscope database in current directory
+    if filereadable("cscope.out")
+        cs add cscope.out  
+    " else add the database pointed to by environment variable 
+    elseif $CSCOPE_DB != ""
+        cs add $CSCOPE_DB
+    endif
+
+    " show msg when any other cscope db added
+    set cscopeverbose  
+
+    """"""""""""" My cscope/vim key mappings
+    "
+    " The following maps all invoke one of the following cscope search types:
+    "
+    "   's'   symbol: find all references to the token under cursor
+    "   'g'   global: find global definition(s) of the token under cursor
+    "   'c'   calls:  find all calls to the function name under cursor
+    "   't'   text:   find all instances of the text under cursor
+    "   'e'   egrep:  egrep search for the word under cursor
+    "   'f'   file:   open the filename under cursor
+    "   'i'   includes: find files that include the filename under cursor
+    "   'd'   called: find functions that function under cursor calls
+    "
+    " Below are three sets of the maps: one set that just jumps to your
+    " search result, one that splits the existing vim window horizontally and
+    " diplays your search result in the new window, and one that does the same
+    " thing, but does a vertical split instead (vim 6 only).
+    "
+    " I've used CTRL-\ and CTRL-@ as the starting keys for these maps, as it's
+    " unlikely that you need their default mappings (CTRL-\'s default use is
+    " as part of CTRL-\ CTRL-N typemap, which basically just does the same
+    " thing as hitting 'escape': CTRL-@ doesn't seem to have any default use).
+    " If you don't like using 'CTRL-@' or CTRL-\, , you can change some or all
+    " of these maps to use other keys.  One likely candidate is 'CTRL-_'
+    " (which also maps to CTRL-/, which is easier to type).  By default it is
+    " used to switch between Hebrew and English keyboard mode.
+    "
+    " All of the maps involving the <cfile> macro use '^<cfile>$': this is so
+    " that searches over '#include <time.h>" return only references to
+    " 'time.h', and not 'sys/time.h', etc. (by default cscope will return all
+    " files that contain 'time.h' as part of their name).
+
+
+    " To do the first type of search, hit 'CTRL-\', followed by one of the
+    " cscope search types above (s,g,c,t,e,f,i,d).  The result of your cscope
+    " search will be displayed in the current window.  You can use CTRL-T to
+    " go back to where you were before the search.  
+    "
+
+    nmap <C-\>s :cs find s <C-R>=expand("<cword>")<CR><CR>	
+    nmap <C-\>g :cs find g <C-R>=expand("<cword>")<CR><CR>	
+    nmap <C-\>c :cs find c <C-R>=expand("<cword>")<CR><CR>	
+    nmap <C-\>t :cs find t <C-R>=expand("<cword>")<CR><CR>	
+    nmap <C-\>e :cs find e <C-R>=expand("<cword>")<CR><CR>	
+    nmap <C-\>f :cs find f <C-R>=expand("<cfile>")<CR><CR>	
+    nmap <C-\>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
+    nmap <C-\>d :cs find d <C-R>=expand("<cword>")<CR><CR>	
+
+
+    " Using 'CTRL-spacebar' (intepreted as CTRL-@ by vim) then a search type
+    " makes the vim window split horizontally, with search result displayed in
+    " the new window.
+    "
+    " (Note: earlier versions of vim may not have the :scs command, but it
+    " can be simulated roughly via:
+    "    nmap <C-@>s <C-W><C-S> :cs find s <C-R>=expand("<cword>")<CR><CR>	
+
+    nmap <C-@>s :scs find s <C-R>=expand("<cword>")<CR><CR>	
+    nmap <C-@>g :scs find g <C-R>=expand("<cword>")<CR><CR>	
+    nmap <C-@>c :scs find c <C-R>=expand("<cword>")<CR><CR>	
+    nmap <C-@>t :scs find t <C-R>=expand("<cword>")<CR><CR>	
+    nmap <C-@>e :scs find e <C-R>=expand("<cword>")<CR><CR>	
+    nmap <C-@>f :scs find f <C-R>=expand("<cfile>")<CR><CR>	
+    nmap <C-@>i :scs find i ^<C-R>=expand("<cfile>")<CR>$<CR>	
+    nmap <C-@>d :scs find d <C-R>=expand("<cword>")<CR><CR>	
+
+
+    " Hitting CTRL-space *twice* before the search type does a vertical 
+    " split instead of a horizontal one (vim 6 and up only)
+    "
+    " (Note: you may wish to put a 'set splitright' in your .vimrc
+    " if you prefer the new window on the right instead of the left
+
+    nmap <C-@><C-@>s :vert scs find s <C-R>=expand("<cword>")<CR><CR>
+    nmap <C-@><C-@>g :vert scs find g <C-R>=expand("<cword>")<CR><CR>
+    nmap <C-@><C-@>c :vert scs find c <C-R>=expand("<cword>")<CR><CR>
+    nmap <C-@><C-@>t :vert scs find t <C-R>=expand("<cword>")<CR><CR>
+    nmap <C-@><C-@>e :vert scs find e <C-R>=expand("<cword>")<CR><CR>
+    nmap <C-@><C-@>f :vert scs find f <C-R>=expand("<cfile>")<CR><CR>	
+    nmap <C-@><C-@>i :vert scs find i ^<C-R>=expand("<cfile>")<CR>$<CR>	
+    nmap <C-@><C-@>d :vert scs find d <C-R>=expand("<cword>")<CR><CR>
+
+
+    """"""""""""" key map timeouts
+    "
+    " By default Vim will only wait 1 second for each keystroke in a mapping.
+    " You may find that too short with the above typemaps.  If so, you should
+    " either turn off mapping timeouts via 'notimeout'.
+    "
+    "set notimeout 
+    "
+    " Or, you can keep timeouts, by uncommenting the timeoutlen line below,
+    " with your own personal favorite value (in milliseconds):
+    "
+    "set timeoutlen=4000
+    "
+    " Either way, since mapping timeout settings by default also set the
+    " timeouts for multicharacter 'keys codes' (like <F1>), you should also
+    " set ttimeout and ttimeoutlen: otherwise, you will experience strange
+    " delays as vim waits for a keystroke after you hit ESC (it will be
+    " waiting to see if the ESC is actually part of a key code like <F1>).
+    "
+    "set ttimeout 
+    "
+    " personally, I find a tenth of a second to work well for key code
+    " timeouts. If you experience problems and have a slow terminal or network
+    " connection, set it higher.  If you don't set ttimeoutlen, the value for
+    " timeoutlent (default: 1000 = 1 second, which is sluggish) is used.
+    "
+    "set ttimeoutlen=100
+
+    " fzf integration from https://gist.github.com/amitab/cd051f1ea23c588109c6cfcb7d1d5776
+    function! Cscope(option, query)
+      let color = '{ x = $1; $1 = ""; z = $3; $3 = ""; printf "\033[34m%s\033[0m:\033[31m%s\033[0m\011\033[37m%s\033[0m\n", x,z,$0; }'
+      let opts = {
+      \ 'source':  "cscope -dL" . a:option . " " . a:query . " | awk '" . color . "'",
+      \ 'options': ['--ansi', '--prompt', '> ',
+      \             '--multi', '--bind', 'alt-a:select-all,alt-d:deselect-all',
+      \             '--color', 'fg:188,fg+:222,bg+:#3a3a3a,hl+:104'],
+      \ 'down': '40%'
+      \ }
+      function! opts.sink(lines) 
+        let data = split(a:lines)
+        let file = split(data[0], ":")
+        execute 'e ' . '+' . file[1] . ' ' . file[0]
+      endfunction
+      call fzf#run(opts)
+    endfunction
+    
+    function! CscopeQuery(option)
+      call inputsave()
+      if a:option == '0'
+        let query = input('Assignments to: ')
+      elseif a:option == '1'
+        let query = input('Functions calling: ')
+      elseif a:option == '2'
+        let query = input('Functions called by: ')
+      elseif a:option == '3'
+        let query = input('Egrep: ')
+      elseif a:option == '4'
+        let query = input('File: ')
+      elseif a:option == '6'
+        let query = input('Definition: ')
+      elseif a:option == '7'
+        let query = input('Files #including: ')
+      elseif a:option == '8'
+        let query = input('C Symbol: ')
+      elseif a:option == '9'
+        let query = input('Text: ')
+      else
+        echo "Invalid option!"
+        return
+      endif
+      call inputrestore()
+      if query != ""
+        call Cscope(a:option, query)
+      else
+        echom "Cancelled Search!"
+      endif
+    endfunction
+    
+    nnoremap <silent> <Leader>ca :call Cscope('0', expand('<cword>'))<CR>
+    nnoremap <silent> <Leader>cc :call Cscope('1', expand('<cword>'))<CR>
+    nnoremap <silent> <Leader>cd :call Cscope('2', expand('<cword>'))<CR>
+    nnoremap <silent> <Leader>ce :call Cscope('3', expand('<cword>'))<CR>
+    nnoremap <silent> <Leader>cf :call Cscope('4', expand('<cword>'))<CR>
+    nnoremap <silent> <Leader>cg :call Cscope('6', expand('<cword>'))<CR>
+    nnoremap <silent> <Leader>ci :call Cscope('7', expand('<cword>'))<CR>
+    nnoremap <silent> <Leader>cs :call Cscope('8', expand('<cword>'))<CR>
+    nnoremap <silent> <Leader>ct :call Cscope('9', expand('<cword>'))<CR>
+    
+    nnoremap <silent> <Leader><Leader>ca :call CscopeQuery('0')<CR>
+    nnoremap <silent> <Leader><Leader>cc :call CscopeQuery('1')<CR>
+    nnoremap <silent> <Leader><Leader>cd :call CscopeQuery('2')<CR>
+    nnoremap <silent> <Leader><Leader>ce :call CscopeQuery('3')<CR>
+    nnoremap <silent> <Leader><Leader>cf :call CscopeQuery('4')<CR>
+    nnoremap <silent> <Leader><Leader>cg :call CscopeQuery('6')<CR>
+    nnoremap <silent> <Leader><Leader>ci :call CscopeQuery('7')<CR>
+    nnoremap <silent> <Leader><Leader>cs :call CscopeQuery('8')<CR>
+    nnoremap <silent> <Leader><Leader>ct :call CscopeQuery('9')<CR>
+
+endif
 
 "----------------------------------------------------------
 " Filetype customizations {{{1
@@ -460,94 +617,4 @@ augroup END
 augroup filetypedetect
 au! BufRead,BufNewFile *vproto setfiletype c
 augroup END
-
-""----------------------------------------------------------
-"" neovim-0.5 nightly related features {{{1
-""----------------------------------------------------------
-if IsNvimTestVersion()
-"----------------------------------------------------------
-" nvim-treesitter
-"----------------------------------------------------------
-lua <<EOF
-require'nvim-treesitter.configs'.setup {
-  ensure_installed = {"c", "cpp", "python", "lua", "bash", "json", "yaml"},
-  highlight = {
-    enable = true,
-  },
-}
-EOF
-
-"----------------------------------------------------------
-" native LSP
-"----------------------------------------------------------
-"lua << EOF
-"vim.lsp.set_log_level('debug')
-
-"local nvim_lsp = require('lspconfig')
-"local nvim_comp = require('completion')
-
-"-- Use an on_attach function to only map the following keys
-"-- after the language server attaches to the current buffer
-"local on_attach = function(client, bufnr)
-"  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
-"  local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
-
-"  --Enable completion triggered by <c-x><c-o>
-"  buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
-
-"  -- Mappings.
-"  local opts = { noremap=true, silent=true }
-
-"  -- See `:help vim.lsp.*` for documentation on any of the below functions
-"  buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-"  buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
-"  buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
-"  buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-"  buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-"  buf_set_keymap('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
-"  buf_set_keymap('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
-"  buf_set_keymap('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
-"  buf_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-"  buf_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-"  buf_set_keymap('n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
-"  buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-"  buf_set_keymap('n', '<space>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
-"  buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
-"  buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
-"  buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
-"  buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
-
-"  nvim_comp.on_attach()
-
-"end
-
-"--nvim_lsp.pyright.setup{on_attach=nvim_comp.on_attach}
-"nvim_lsp.pyright.setup{
-"    on_attach=on_attach
-"}
-
-"nvim_lsp.yamlls.setup{
-"    on_attach=on_attach,
-"    settings = {
-"        python = {
-"            analysis = {
-"                extraPaths = {
-"                    "/Users/nizanmargalit/projects/orion/pysrc/vapi/vapi", 
-"                    "/Users/nizanmargalit/projects/orion/pysrc/vastools/vastools"
-"                }
-"            }
-"        }
-"    }
-"}
-
-"nvim_lsp.bashls.setup{
-"    on_attach=on_attach
-"}
-
-"--nvim_lsp.clangd.setup{
-"--    on_attach=on_attach,
-"--    cmd = { "/usr/local/opt/llvm/bin/clangd", "--background-index" }
-"--}
-"EOF
-endif
 
