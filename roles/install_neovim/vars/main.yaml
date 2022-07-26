@@ -4,8 +4,6 @@ packages:
 config_dirs:
   - "{{ local_home }}/.config/nvim"
 config_links:
-  - target: "{{ role_path }}/files/init.vim"
-    link: "{{ local_home }}/.config/nvim/init.vim"
-  - target: "{{ role_path }}/files/coc-settings.json"
-    link: "{{ local_home }}/.config/nvim/coc-settings.json"
+  - target: "{{ role_path }}/files/init.lua"
+    link: "{{ local_home }}/.config/nvim/init.lua"
 
