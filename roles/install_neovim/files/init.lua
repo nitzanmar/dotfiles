@@ -78,7 +78,7 @@ end)
 -- Plugins configs
 -- ----------------------------------------------------------
 -- ----------------------------------------------------------
--- LSP
+-- lsp plugins
 -- ----------------------------------------------------------
 -- lspsaga
 local saga = require('lspsaga')
@@ -96,10 +96,11 @@ for _, lsp_server in ipairs(lsp_servers) do
     end
 end
 
--- Mappings.
+-- Mappings
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
 local opts = {noremap=true, silent=true}
-vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, opts)
+-- vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, opts)
+vim.keymap.set("n", "<space>e", "<cmd>Lspsaga show_line_diagnostics<CR>", {silent = true, noremap = true})
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
 vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist, opts)
@@ -116,7 +117,8 @@ local on_attach = function(client, bufnr)
     vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
     -- vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
     vim.keymap.set("n", "gd", "<cmd>Lspsaga preview_definition<CR>", {silent = true, noremap = true})
-    vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
+    -- vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
+    vim.keymap.set("n", "K", "<cmd>Lspsaga hover_doc<CR>", {silent = true, noremap = true})
     vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
     -- vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
     vim.keymap.set("n", '<C-k>', "<cmd>Lspsaga signature_help<CR>", bufopts)
@@ -161,6 +163,9 @@ lsp_config['clangd'].setup{
 --   Hint = '#4FC1FF',
 --   Information = '#FFCC66'
 -- })
+
+-- General
+vim.diagnostic.config({virtual_text = false, underline = false})
 
 -- ----------------------------------------------------------
 -- tree-sitter
